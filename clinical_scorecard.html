@@ -568,6 +568,15 @@
     margin-left: 4px;
     }
 
+    .csm-field {
+    transform: translateX(-100px);
+    }
+
+    .csm-field .dropdown-placeholder {
+    max-width: 140px;
+    width: 100%;
+    }
+
   </style>
 </head>
 <body>
@@ -581,15 +590,13 @@
     <div class="card-details">
       <div class="info-group">
         <span class="icon">📝</span> Clinical Interview
-        <span class="icon">🌐</span> English
-        <span class="icon">📅</span> May 22 | 12:30 PM - 1:30 PM (IST)
+        <span class="icon" style="margin-left: 1rem;">🌐</span> English
+        <span class="icon" style="margin-left: 1rem;">📅</span> May 22 | 12:30 PM - 1:30 PM (IST)
       </div>
       <div class="info-group">
         <strong>Candidate:</strong> <span class="chip">AT</span> Alert Test
         &nbsp;&nbsp; <strong>Author:</strong> <span class="author">Experion Dev User2 ExperionDevLnUser2</span>
-      </div>
-      <div class="info-group">
-        <span>Created: May 22, 2025</span> | <span>Updated: May 22, 2025</span>
+        &nbsp;&nbsp; <span>Created: May 22, 2025</span> | <span>Updated: May 22, 2025</span>
       </div>
     </div>
   </div>
@@ -899,9 +906,9 @@
             <label><span class="icon">🏢</span> Offices</label>
             <div class="tag">Habilitation Charlotte (HCH) ✕</div>
             </div>
-            <div class="field">
+            <div class="field csm-field">
             <label><span class="icon">👤</span> CSM assignment</label>
-            <div class="dropdown-placeholder">Select ▾</div>
+            <div class="dropdown-placeholder">Select</div>
             </div>
         </div>
 
@@ -917,7 +924,7 @@
             <p class="summary-label">What did you think? Evaluate this candidate’s skills, qualifications, and potential fit for BAYADA.</p>
             <p class="summary-content">good</p>
             </div>
-            <div class="character-limit">Character count limit: 200 words</div>
+            <div class="character-limit" style="margin-top: 1rem;">Character count limit: 200 words</div>
         </div>
     </div>
 
