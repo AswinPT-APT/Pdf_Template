@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clinical Scorecard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+    }
+
+    .card {
+      background: white;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+      max-width: 92%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .status {
+      background: #00c9a7;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .card-details {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .info-group {
+      margin: 8px 0;
+    }
+
+    .icon {
+      margin-right: 6px;
+    }
+
+    .chip {
+      display: inline-block;
+      background: #d9eaff;
+      color: #004085;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 22px;
+      font-weight: bold;
+      font-size: 12px;
+      margin: 0 6px;
+    }
+
+    .author {
+      color: #0062cc;
+    }
+
+    /* Icebreakers section */
+    .section-title {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .question-label {
+      font-weight: 500;
+      margin-bottom: 10px;
+      display: block;
+      font-size: 14px;
+    }
+
+    .toggle-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .toggle-button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      background: #f5f5f5;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .toggle-button.selected {
+      background: #e6f9f6;
+      border-color: #00c9a7;
+    }
+
+    .textarea-group {
+      background: #f4f4f4;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+
+    .textarea-group.alt-bg {
+      background: #f6f8fb;
+    }
+
+    .textarea-group label {
+      font-size: 14px;
+      font-weight: 600;
+      display: block;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .textarea-content {
+      font-size: 14px;
+      color: #555;
+      min-height: 20px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .placeholder {
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- First Card -->
+  <div class="card">
+    <div class="card-header">
+      <h2>Clinical Scorecards | Exp-BAY-BH-RN</h2>
+      <span class="status">Submitted</span>
+    </div>
+    <div class="card-details">
+      <div class="info-group">
+        <span class="icon">📝</span> Clinical Interview
+        <span class="icon">🌐</span> English
+        <span class="icon">📅</span> May 22 | 12:30 PM - 1:30 PM (IST)
+      </div>
+      <div class="info-group">
+        <strong>Candidate:</strong> <span class="chip">AT</span> Alert Test
+        &nbsp;&nbsp; <strong>Author:</strong> <span class="author">Experion Dev User2 ExperionDevLnUser2</span>
+      </div>
+      <div class="info-group">
+        <span>Created: May 22, 2025</span> | <span>Updated: May 22, 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Card with Icebreakers -->
+  <div class="card">
+    <div class="section-title">Icebreakers & Openers</div>
+
+    <label class="question-label">Are they a previous employee?</label>
+    <div class="toggle-buttons">
+      <div class="toggle-button selected">✔️ Yes</div>
+      <div class="toggle-button">❌ No</div>
+    </div>
+
+    <div class="textarea-group">
+      <label>If yes, describe their previous experience.</label>
+      <p class="textarea-content placeholder">Enter the previous experience.</p>
+    </div>
+
+    <div class="textarea-group alt-bg">
+      <label>What are their career goals and aspirations?</label>
+      <p class="textarea-content placeholder">Enter the career goals and aspirations.</p>
+    </div>
+  </div>
+
+</body>
+</html>
