@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Other Scorecard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+    }
+
+    .card {
+      background: white;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+      max-width: 92%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .status {
+      background: #00c9a7;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .card-details {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .info-group {
+      margin: 8px 0;
+    }
+
+    .icon {
+      margin-right: 6px;
+    }
+
+    .chip {
+      display: inline-block;
+      background: #d9eaff;
+      color: #004085;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 22px;
+      font-weight: bold;
+      font-size: 12px;
+      margin: 0 6px;
+    }
+
+    .author {
+      color: #0062cc;
+    }
+
+    .section-title {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .soft-divider {
+    height: 1px;
+    background-color: #e0e4ea;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
+    margin: 20px 0;
+    }
+
+    .tag {
+    display: inline-block;
+    background: #e4eaf0;
+    color: #333;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    margin-right: 8px;
+    margin-top: 4px;
+    }
+
+    .muted {
+    color: #888;
+    }
+
+    .icon {
+    font-size: 16px;
+    }
+
+    .proficiency-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    }
+
+    .proficiency-tags .tag {
+    background-color: #f1f3f5;
+    color: #333;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    }
+
+    .proficiency-tags .tag.selected {
+    background-color: #00b0a6;
+    color: white;
+    font-weight: 600;
+    }
+
+    .character-limit {
+    font-size: 13px;
+    color: #555;
+    }
+
+    .rating-recommendation {
+    background-color: #e6f4ff;
+    padding: 20px;
+    border-radius: 16px;
+    margin-top: 32px;
+    font-family: Arial, sans-serif;
+    color: #222;
+    }
+
+    .rating-recommendation h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    }
+
+    .field-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    }
+
+    .field {
+    flex: 1;
+    min-width: 220px;
+    }
+
+    .field label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #444;
+    }
+
+    .field .tag {
+    background: #fff;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 13px;
+    display: inline-block;
+    color: #333;
+    box-shadow: inset 0 0 0 1px #ccc;
+    }
+
+    .dropdown-placeholder {
+    background: #fff;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #999;
+    box-shadow: inset 0 0 0 1px #ccc;
+    }
+
+    .summary-text {
+    background-color: #fff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-top: 8px;
+    }
+
+    .summary-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 6px;
+    }
+
+    .summary-content {
+    font-size: 14px;
+    margin: 0;
+    color: #222;
+    }
+
+    .required::after {
+    content: '*';
+    color: red;
+    margin-left: 4px;
+    }
+
+    .csm-field {
+    transform: translateX(-100px);
+    }
+
+    .csm-field .dropdown-placeholder {
+    max-width: 140px;
+    width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!---------------------------------------- Header ---------------------------------------->
+  <div class="card">
+    <div class="card-header">
+      <h2>Other Scorecards | Exp-BAY-BH-RN</h2>
+      <span class="status">Submitted</span>
+    </div>
+    <div class="card-details">
+      <div class="info-group">
+        <span class="icon">📝</span> Other Interview
+        <span class="icon" style="margin-left: 1rem;">🌐</span> English
+        <span class="icon" style="margin-left: 1rem;">📅</span> May 22 | 12:30 PM - 1:30 PM (IST)
+      </div>
+      <div class="info-group">
+        <strong>Candidate:</strong> <span class="chip">AT</span> Alert Test
+        &nbsp;&nbsp; <strong>Author:</strong> <span class="author">Experion Dev User2 ExperionDevLnUser2</span>
+        &nbsp;&nbsp; <span>Created: May 22, 2025</span> | <span>Updated: May 22, 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <!------------------------------ Rating Recommendation -------------------------------->
+
+    <div class="rating-recommendation">
+        <div class="section-title">Rating &amp; Recommendation</div>
+
+        <div class="field-row">
+            <div class="field">
+            <label><span class="icon">🏢</span> Offices</label>
+            <div class="tag">Habilitation Charlotte (HCH) ✕</div>
+            </div>
+            <div class="field csm-field">
+            <label><span class="icon">👤</span> CSM assignment</label>
+            <div class="dropdown-placeholder">Select</div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="required"><span class="icon">📝</span> Recruiter summary</label>
+            <div class="proficiency-tags">
+                    <span class="tag">😕 Do not recommend</span>
+                    <span class="tag">😐 Tentatively recommend</span>
+                    <span class="tag">🙂 Recommend</span>
+                    <span class="tag selected">😄 Highly Recommend</span>
+                </div>
+            <div class="summary-text">
+            <p class="summary-label">What did you think? Evaluate this candidate’s skills, qualifications, and potential fit for BAYADA.</p>
+            <p class="summary-content">good</p>
+            </div>
+            <div class="character-limit" style="margin-top: 1rem;">Character count limit: 200 words</div>
+        </div>
+    </div>
+
+    <div class="soft-divider"></div>
+
+  </div>
+
+</body>
+</html>

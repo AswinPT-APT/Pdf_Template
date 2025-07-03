@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Non Clinical Scorecard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+    }
+
+    .card {
+      background: white;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+      max-width: 92%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .status {
+      background: #00c9a7;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .card-details {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .info-group {
+      margin: 8px 0;
+    }
+
+    .icon {
+      margin-right: 6px;
+    }
+
+    .chip {
+      display: inline-block;
+      background: #d9eaff;
+      color: #004085;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 22px;
+      font-weight: bold;
+      font-size: 12px;
+      margin: 0 6px;
+    }
+
+    .author {
+      color: #0062cc;
+    }
+
+    /* Icebreakers section */
+    .section-title {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .question-label {
+      font-weight: 500;
+      margin-bottom: 10px;
+      display: block;
+      font-size: 14px;
+    }
+
+    .toggle-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .toggle-button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      background: #f5f5f5;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .toggle-button.selected {
+      background: #e6f9f6;
+      border-color: darkgreen;
+    }
+
+    .textarea-group {
+      background: #f4f4f4;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+
+    .textarea-group.alt-bg {
+      background: #f6f8fb;
+    }
+
+    .textarea-group label {
+      font-size: 14px;
+      font-weight: 600;
+      display: block;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .textarea-content {
+      font-size: 14px;
+      color: #555;
+      min-height: 20px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .placeholder {
+      color: #aaa;
+    }
+
+    .license-table {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    }
+
+    .license-header,
+    .license-row {
+    display: grid;
+    grid-template-columns: 2.5fr 1.5fr 1.5fr 1fr 1.5fr;
+    gap: 20px;
+    font-size: 14px;
+    padding: 6px 0;
+    }
+
+    .license-header {
+    font-weight: bold;
+    color: #444;
+    }
+
+    .license-row {
+    color: #555;
+    }
+
+    .soft-divider {
+    height: 1px;
+    background-color: #e0e4ea;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
+    margin: 20px 0;
+    }
+
+    .practice-placement {
+    margin-top: 24px;
+    font-family: Arial, sans-serif;
+    color: #222;
+    }
+
+    .practice-placement h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    }
+
+    .section {
+    margin-bottom: 20px;
+    }
+
+    .icon-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    }
+
+    .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    max-width: 280px;
+    }
+
+    .item .icon {
+    font-size: 20px;
+    }
+
+    .label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+    }
+
+    .value {
+    font-size: 14px;
+    color: #666;
+    }
+
+    .opportunities-box {
+    background: #f1f3f7;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 8px;
+    }
+
+    .opportunities-box .subsection {
+    margin-top: 8px;
+    }
+
+    .opportunities-box .label {
+    font-weight: 600;
+    font-size: 13px;
+    }
+
+    .opportunities-box .value.muted {
+    font-size: 13px;
+    color: #888;
+    }
+
+    .sub-section-title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 8px;
+    }
+
+    .tag {
+    display: inline-block;
+    background: #e4eaf0;
+    color: #333;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    margin-right: 8px;
+    margin-top: 4px;
+    }
+
+    .muted {
+    color: #888;
+    }
+
+    .work-preferences {
+    margin-top: 32px;
+    font-family: Arial, sans-serif;
+    color: #222;
+    }
+
+    .work-preferences h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    }
+
+    .icon {
+    font-size: 16px;
+    }
+
+    .availability-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 2px;
+    }
+
+    .day-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    }
+
+    .day-circle {
+    width: 28px;
+    height: 28px;
+    background-color: #007B8F;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    line-height: 28px;
+    border-radius: 50%;
+    font-size: 13px;
+    }
+
+    .time-range {
+    font-size: 14px;
+    color: #444;
+    }
+
+    .bayada-way, .behavioral-assessment {
+    margin-top: 32px;
+    font-family: Arial, sans-serif;
+    color: #222;
+    }
+
+    .bayada-way h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    }
+
+    .bayada-way .question {
+    font-weight: 500;
+    margin-bottom: 12px;
+    }
+
+    .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    }
+
+    .radio-group label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    }
+
+    .proficiency-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    }
+
+    .proficiency-tags .tag {
+    background-color: #f1f3f5;
+    color: #333;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    }
+
+    .proficiency-tags .tag.selected {
+    background-color: #00b0a6;
+    color: white;
+    font-weight: 600;
+    }
+
+    .evaluation-box {
+    background-color: #f1f3f5;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    }
+
+    .eval-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 15px;
+    }
+
+    .eval-placeholder {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+    }
+
+    .character-limit {
+    font-size: 13px;
+    color: #555;
+    }
+
+    .accordion-section {
+    margin-bottom: 12px;
+    }
+
+    .accordion-title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    }
+
+    .question-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 6px;
+    font-size: 14px;
+    }
+
+    .question-group label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    }
+
+    .compensation-section {
+    margin-top: 32px;
+    font-family: Arial, sans-serif;
+    color: #222;
+    }
+
+    .compensation-section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    }
+
+    .compensation-label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #444;
+    }
+
+    .compensation-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f1f3f5;
+    padding: 10px 16px;
+    border-radius: 12px;
+    max-width: 320px;
+    }
+
+    .compensation-amount {
+    margin: 0;
+    font-size: 14px;
+    color: #111;
+    }
+
+    .compensation-type {
+    font-size: 14px;
+    color: #444;
+    }
+
+    .rating-recommendation {
+    background-color: #e6f4ff;
+    padding: 20px;
+    border-radius: 16px;
+    margin-top: 32px;
+    font-family: Arial, sans-serif;
+    color: #222;
+    }
+
+    .rating-recommendation h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    }
+
+    .field-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    }
+
+    .field {
+    flex: 1;
+    min-width: 220px;
+    }
+
+    .field label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #444;
+    }
+
+    .field .tag {
+    background: #fff;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 13px;
+    display: inline-block;
+    color: #333;
+    box-shadow: inset 0 0 0 1px #ccc;
+    }
+
+    .dropdown-placeholder {
+    background: #fff;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #999;
+    box-shadow: inset 0 0 0 1px #ccc;
+    }
+
+    .summary-text {
+    background-color: #fff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-top: 8px;
+    }
+
+    .summary-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 6px;
+    }
+
+    .summary-content {
+    font-size: 14px;
+    margin: 0;
+    color: #222;
+    }
+
+    .required::after {
+    content: '*';
+    color: red;
+    margin-left: 4px;
+    }
+
+    .csm-field {
+    transform: translateX(-100px);
+    }
+
+    .csm-field .dropdown-placeholder {
+    max-width: 140px;
+    width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!---------------------------------------- Header ---------------------------------------->
+  <div class="card">
+    <div class="card-header">
+      <h2>Non-Clinical Scorecards | Exp-BAY-BH-RN</h2>
+      <span class="status">Submitted</span>
+    </div>
+    <div class="card-details">
+      <div class="info-group">
+        <span class="icon">📝</span> Non-Clinical Interview
+        <span class="icon" style="margin-left: 1rem;">🌐</span> English
+        <span class="icon" style="margin-left: 1rem;">📅</span> May 22 | 12:30 PM - 1:30 PM (IST)
+      </div>
+      <div class="info-group">
+        <strong>Candidate:</strong> <span class="chip">AT</span> Alert Test
+        &nbsp;&nbsp; <strong>Author:</strong> <span class="author">Experion Dev User2 ExperionDevLnUser2</span>
+        &nbsp;&nbsp; <span>Created: May 22, 2025</span> | <span>Updated: May 22, 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!----------------------------------- Icebreakers --------------------------------------->
+  <div class="card">
+    <div class="section-title">Icebreakers & Openers</div>
+
+    <label class="question-label">Are they a previous employee?</label>
+    <div class="toggle-buttons">
+      <div class="toggle-button selected">✔️ Yes</div>
+      <div class="toggle-button">❌ No</div>
+    </div>
+
+    <div class="textarea-group">
+      <label>If yes, describe their previous experience.</label>
+      <p class="textarea-content placeholder">Enter the previous experience.</p>
+    </div>
+
+    <div class="textarea-group alt-bg">
+      <label>What are their career goals and aspirations?</label>
+      <p class="textarea-content placeholder">Enter the career goals and aspirations.</p>
+    </div>
+
+    <div class="soft-divider"></div>
+
+    <!----------------------------- Licenses & Certifications ------------------------------->
+
+    <div class="section-title">Licenses & Certifications</div>
+    <div class="license-table">
+        <div class="license-header">
+        <div>License type</div>
+        <div>License number</div>
+        <div>State</div>
+        <div>Status</div>
+        <div>Expiration date</div>
+        </div>
+        <div class="license-row">
+        <div>Registered Nurse (RN)</div>
+        <div>111</div>
+        <div>Alabama</div>
+        <div>-</div>
+        <div>-</div>
+        </div>
+    </div>
+
+    <div class="soft-divider"></div>
+
+    <!-------------------------------- Practice Placement ----------------------------------->
+
+    <div class="practice-placement">
+        <div class="section-title">Practice Placement</div>
+
+        <div class="section service-area">
+            <div class="icon-row">
+            <div class="item">
+                <span class="icon">📍</span>
+                <div>
+                <div class="label">Candidate address</div>
+                <div class="value">Anacortes Ferry Terminal, Anacortes, Washington, 98221, United States</div>
+                </div>
+            </div>
+            <div class="item">
+                <span class="icon">⏱️</span>
+                <div>
+                <div class="label">Travel time</div>
+                <div class="value">15 Minutes</div>
+                </div>
+            </div>
+            <div class="item">
+                <span class="icon">🚌</span>
+                <div>
+                <div class="label">Needs public transit?</div>
+                <div class="value">-</div>
+                </div>
+            </div>
+            </div>
+
+            <div class="opportunities-box">
+            <strong>Opportunities in this area</strong>
+            <div class="subsection">
+                <div class="label">Practices</div>
+                <div class="value muted">Practice and trainings not available based on the preference</div>
+            </div>
+            <div class="subsection">
+                <div class="label">Trainings</div>
+                <div class="value muted">Practice and trainings not available based on the preference</div>
+            </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="sub-section-title">Client Types</div>
+            <div class="tag">Adults</div>
+            <div class="tag">Patients with Intellectual Disabilities</div>
+        </div>
+
+        <div class="section">
+            <div class="sub-section-title">Willing to Transport Clients</div>
+            <div class="value muted">Information not provided</div>
+        </div>
+
+        <div class="section">
+            <div class="sub-section-title">Shift Type</div>
+            <div class="tag">Live in</div>
+        </div>
+    </div>
+
+    <div class="soft-divider"></div>
+
+    <!-------------------------------- Work Preferences ----------------------------------->
+
+    <div class="work-preferences">
+        <div class="section-title">Work Preferences</div>
+
+        <div class="section">
+            <div class="sub-section-title">
+            <span class="icon">📅</span> Availability
+            </div>
+            <div class="availability-list">
+            <div class="day-row">
+                <span class="day-circle">M</span>
+                <span class="time-range">12:00 am to 1:30 am</span>
+            </div>
+            <div class="day-row">
+                <span class="day-circle">T</span>
+                <span class="time-range">12:00 am to 2:00 am</span>
+            </div>
+            <div class="day-row">
+                <span class="day-circle">W</span>
+                <span class="time-range">12:30 am to 1:30 am</span>
+            </div>
+            <div class="day-row">
+                <span class="day-circle">T</span>
+                <span class="time-range">12:00 am to 1:00 am</span>
+            </div>
+            <div class="day-row">
+                <span class="day-circle">F</span>
+                <span class="time-range">12:00 am to 1:00 am</span>
+            </div>
+            <div class="day-row">
+                <span class="day-circle">S</span>
+                <span class="time-range">1:00 am to 2:00 am</span>
+            </div>
+            <div class="day-row">
+                <span class="day-circle">S</span>
+                <span class="time-range">2:00 am to 8:00 am</span>
+            </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="sub-section-title">
+            <span class="icon">⏱️</span> Desired hours per week
+            </div>
+            <div class="value">15 Hours</div>
+        </div>
+    </div>
+
+    <div class="soft-divider"></div>
+
+    <!-------------------------------- BAYADA WAY ----------------------------------->
+
+    <div class="bayada-way">
+        <div class="section-title">The BAYADA Way</div>
+        <p class="question">Tell me about a time when you went the extra mile...</p>
+
+        <div class="radio-group">
+            <label><input type="checkbox" name="bayada-scenario" /> [with healthcare] for a client and their family.</label>
+            <label><input type="checkbox" name="bayada-scenario" /> [without healthcare] for a customer or co-worker at work.</label>
+            <label>
+            <input type="radio" name="bayada-scenario" />
+            Tell me about a time when you helped a client achieve their care plan/developmental plan goals.
+            How did you assist the client and what steps did you take to help them reach that achievement?
+            </label>
+        </div>
+
+        <div class="proficiency-tags">
+            <span class="tag">😕 Underdeveloped</span>
+            <span class="tag">🙂 Developing</span>
+            <span class="tag">😐 Competent</span>
+            <span class="tag selected">😎 Highly Proficient</span>
+        </div>
+
+        <div class="evaluation-box">
+            <div class="eval-label">Evaluation</div>
+            <p class="eval-placeholder">Please add your notes for this section of the candidate’s interview.</p>
+        </div>
+
+        <div class="character-limit">Character count limit: 200 words</div>
+    </div>
+
+    <div class="soft-divider"></div>
+
+    <!------------------------------ Behavioral Assessment ------------------------------->
+
+    <div class="behavioral-assessment">
+        <div class="section-title">Behavioral Assessment</div>
+
+        <div class="accordion-section">
+            <div class="accordion-title">📘 Client Focused / Critical Thinking</div>
+            <div class="question-group">
+            <label><input type="checkbox" name="assessment1[]" /> Tell me about the biggest challenge you faced as a caregiver and what you did to resolve the challenge for the client.</label>
+            <label><input type="checkbox" name="assessment1[]" /> Tell me about a time when you realized a client needed care you lacked experience with. What did you do to ensure the client got the care they needed?</label>
+            <label><input type="checkbox" name="assessment1[]" /> Your patient is not following through with their prescribed treatment plan and education, so they are not making progress. How do you respond?</label>
+            <label><input type="checkbox" name="assessment1[]" /> Describe a time when you were faced with a complex problem at work. How did you go about solving it?</label>
+            </div>
+        </div>
+
+        <div class="accordion-section">
+            <div class="accordion-title">📣 Communicates Effectively</div>
+            <div class="question-group">
+            <label><input type="checkbox" name="assessment1[]" /> Tell me about a time when you adjusted your style to accommodate a patient/client and build rapport with the client/family?</label>
+            <label><input type="checkbox" name="assessment1[]" /> Tell me about a time when a lack of communication between team members led to or could have led to a negative patient/client outcome. How did you handle it?</label>
+            <label><input type="checkbox" name="assessment1[]" /> Tell me about a time when you had difficulty communicating with your supervisor.  What made it difficult and what did you do to resolve the issue?</label>
+            <label><input type="checkbox" name="assessment1[]" /> *Tell me about a time when you had to adjust your communication style at work to deal with either a co-worker or customer to build a good relationship or address their concerns.</label>
+            </div>
+        </div>
+        <div class="accordion-section">
+            <div class="accordion-title">🏠 Home Health</div>
+            <div class="question-group">
+            <label><input type="checkbox" name="assessment1[]" /> Tell me about the biggest challenge you faced as a caregiver and what you did to resolve the challenge for the client.</label>
+            <label><input type="checkbox" name="assessment1[]" /> Tell me about a time when you adjusted your style to accommodate a patient/client and build rapport with the client/family?</label>
+            </div>
+        </div>
+        <div class="accordion-section">
+            <div class="accordion-title">🏥 SNU</div>
+            <div class="question-group">
+            <label><input type="checkbox" name="assessment1[]" /> Explain a time you were involved in an emergency with a patient and how did you respond.</label>
+            <label><input type="checkbox" name="assessment1[]" /> Tell me about a time where the family was intervening in care or directing care and how did you handle the situation?</label>
+            </div>
+        </div>
+
+        <div class="proficiency-tags">
+            <span class="tag">😕 Underdeveloped</span>
+            <span class="tag">🙂 Developing</span>
+            <span class="tag">😐 Competent</span>
+            <span class="tag selected">😎 Highly Proficient</span>
+        </div>
+
+        <div class="evaluation-box">
+            <div class="eval-label">Evaluation</div>
+            <p class="eval-placeholder">Please add your notes for this section of the candidate’s interview.</p>
+        </div>
+
+        <div class="character-limit">Character count limit: 200 words</div>
+    </div>
+
+    <div class="soft-divider"></div>
+
+    <!------------------------------ Compensation ------------------------------->
+
+    <div class="compensation-section">
+        <div class="section-title">Compensation</div>
+        <div class="compensation-label">
+            <span class="icon">💰</span> Desired compensation
+        </div>
+
+        <div class="compensation-box">
+            <p class="compensation-amount">$ 1</p>
+            <span class="compensation-type">Hourly ▾</span>
+        </div>
+    </div>
+
+    <div class="soft-divider"></div>
+
+    <!------------------------------ Rating Recommendation -------------------------------->
+
+    <div class="rating-recommendation">
+        <div class="section-title">Rating &amp; Recommendation</div>
+
+        <div class="field-row">
+            <div class="field">
+            <label><span class="icon">🏢</span> Offices</label>
+            <div class="tag">Habilitation Charlotte (HCH) ✕</div>
+            </div>
+            <div class="field csm-field">
+            <label><span class="icon">👤</span> CSM assignment</label>
+            <div class="dropdown-placeholder">Select</div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="required"><span class="icon">📝</span> Recruiter summary</label>
+            <div class="proficiency-tags">
+                    <span class="tag">😕 Do not recommend</span>
+                    <span class="tag">😐 Tentatively recommend</span>
+                    <span class="tag">🙂 Recommend</span>
+                    <span class="tag selected">😄 Highly Recommend</span>
+                </div>
+            <div class="summary-text">
+            <p class="summary-label">What did you think? Evaluate this candidate’s skills, qualifications, and potential fit for BAYADA.</p>
+            <p class="summary-content">good</p>
+            </div>
+            <div class="character-limit" style="margin-top: 1rem;">Character count limit: 200 words</div>
+        </div>
+    </div>
+
+    <div class="soft-divider"></div>
+
+  </div>
+
+</body>
+</html>
