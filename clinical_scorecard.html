@@ -681,18 +681,48 @@
 
       <div class="section">
         <div class="sub-section-title">Client Types</div>
-        <div class="tag">Adults</div>
-        <div class="tag">Patients with Intellectual Disabilities</div>
+          @if (Model.CandidateEvaluationDto.PracticePlacementDto?.ClientTypes?.Any() == true)
+          {
+              @foreach (var clientType in Model.CandidateEvaluationDto.PracticePlacementDto.ClientTypes)
+              {
+                  <div class="tag">@clientType</div>
+              }
+          }
+          else
+          {
+              <div class="value muted">Information not provided</div>
+          }
       </div>
 
       <div class="section">
         <div class="sub-section-title">Willing to Transport Clients</div>
-        <div class="value muted">Information not provided</div>
+        @{
+            var willing = Model.CandidateEvaluationDto.PracticePlacement?.WillingToTransportClient;
+        }
+        @if (!willing.HasValue)
+        {
+            <div class="value muted">Information not provided</div>
+        }
+        else
+        {
+            <div class="value">@((willing.Value) ? "Yes" : "No")</div>
+        }
       </div>
+
 
       <div class="section">
         <div class="sub-section-title">Shift Type</div>
-        <div class="tag">Live in</div>
+          @if (Model.CandidateEvaluationDto.PracticePlacementDto?.ShiftTypes?.Any() == true)
+          {
+              @foreach (var shiftType in Model.CandidateEvaluationDto.PracticePlacementDto.ShiftTypes)
+              {
+                  <div class="tag">@shiftType</div>
+              }
+          }
+          else
+          {
+              <div class="value muted">Information not provided</div>
+          }
       </div>
     </div>
 
@@ -700,50 +730,66 @@
 
     <!-------------------------------- Work Preferences ----------------------------------->
 
-    <div class="work-preferences">
-      <div class="section-title">Work Preferences</div>
+    @{
+      var dayMap = new Dictionary<int, string>
+      {
+          { 1, "M" },
+          { 2, "T" },
+          { 3, "W" },
+          { 4, "T" },
+          { 5, "F" },
+          { 6, "S" },
+          { 7, "S" }
+      };
 
-      <div class="section">
+      var availabilitySlots = Model.CandidateEvaluationDto.WorkPreferences?.AvailabilitySlots ?? new List<AvailabilitySlotDto>();
+
+      var groupedSlots = availabilitySlots
+          .GroupBy(s => s.Day)
+          .OrderBy(g => g.Key);
+    }
+
+    <div class="work-preferences">
+    <div class="section-title">Work Preferences</div>
+
+    <div class="section">
         <div class="sub-section-title">
-          <span class="icon">📅</span> Availability
+            <span class="icon">📅</span> Availability
         </div>
-        <div class="availability-list">
-          <div class="day-row">
-            <span class="day-circle">M</span>
-            <span class="time-range">12:00 am to 1:30 am</span>
+          <div class="availability-list">
+              @foreach (var group in groupedSlots)
+              {
+                  var dayShort = dayMap.ContainsKey(group.Key) ? dayMap[group.Key] : "-";
+                  <div class="day-row">
+                      <span class="day-circle">@dayShort</span>
+                      <div class="time-range">
+                          @if (group.All(s => s.AvailableSlotFromTime == null || s.AvailableSlotToTime == null))
+                          {
+                              <div class="muted">No slots selected</div>
+                          }
+                          else
+                          {
+                              @foreach (var slot in group)
+                              {
+                                  if (slot.AvailableSlotFromTime != null && slot.AvailableSlotToTime != null)
+                                  {
+                                      <div>
+                                          @slot.AvailableSlotFromTime?.ToString("hh:mm tt") to @slot.AvailableSlotToTime?.ToString("hh:mm tt")
+                                      </div>
+                                  }
+                              }
+                          }
+                      </div>
+                  </div>
+              }
           </div>
-          <div class="day-row">
-            <span class="day-circle">T</span>
-            <span class="time-range">12:00 am to 2:00 am</span>
-          </div>
-          <div class="day-row">
-            <span class="day-circle">W</span>
-            <span class="time-range">12:30 am to 1:30 am</span>
-          </div>
-          <div class="day-row">
-            <span class="day-circle">T</span>
-            <span class="time-range">12:00 am to 1:00 am</span>
-          </div>
-          <div class="day-row">
-            <span class="day-circle">F</span>
-            <span class="time-range">12:00 am to 1:00 am</span>
-          </div>
-          <div class="day-row">
-            <span class="day-circle">S</span>
-            <span class="time-range">1:00 am to 2:00 am</span>
-          </div>
-          <div class="day-row">
-            <span class="day-circle">S</span>
-            <span class="time-range">2:00 am to 8:00 am</span>
-          </div>
-        </div>
       </div>
 
       <div class="section">
-        <div class="sub-section-title">
-          <span class="icon">⏱️</span> Desired hours per week
-        </div>
-        <div class="value">15 Hours</div>
+          <div class="sub-section-title">
+              <span class="icon">⏱️</span> Desired hours per week
+          </div>
+          <div class="value">@Model.CandidateEvaluationDto.WorkPreferences?.DesiredHoursPerWeek Hours</div>
       </div>
     </div>
 
