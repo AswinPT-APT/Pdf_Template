@@ -943,8 +943,23 @@
       </div>
 
       <div class="compensation-box">
-        <p class="compensation-amount">$ 1</p>
-        <span class="compensation-type">Hourly ▾</span>
+        <p class="compensation-amount">
+          @($"{Model.CandidateClinicalScorecards.Compensation.CompensationCurrency} {Model.CandidateClinicalScorecards.Compensation.DesiredCompensation}")
+        </p>
+        <span class="compensation-type">
+          @switch(Model.CandidateClinicalScorecards.Compensation.CompensationMethod)
+            {
+                case CompensationMethods.Hourly:
+                    <text>Hourly</text>
+                    break;
+                case CompensationMethods.Points:
+                    <text>Points</text>
+                    break;
+                default:
+                    <text>Hourly</text>
+                    break;
+            }
+        </span>
       </div>
     </div>
 
@@ -958,33 +973,31 @@
       <div class="field-row">
         <div class="field">
           <label><span class="icon">🏢</span> Offices</label>
-          <div class="tag">Habilitation Charlotte (HCH)</div>
+          <div class="tag">@Model.CandidateClinicalScorecards.RatingAndRecommendation.OfficeName</div>
         </div>
         <div class="field csm-field">
           <label><span class="icon">👤</span> CSM assignment</label>
-          <div class="dropdown-placeholder">Select</div>
+          <div class="dropdown-placeholder">@Model.CandidateClinicalScorecards.RatingAndRecommendation.CsmName</div>
         </div>
       </div>
 
       <div class="field">
-        <label class="required"
-          ><span class="icon">📝</span> Recruiter summary</label
-        >
+        <label class="required"><span class="icon">📝</span> Recruiter summary</label>
+        @{
+          var rating = Model.CandidateEvaluationDto.BayadaWay?.Rating;
+        }
         <div class="proficiency-tags">
-          <span class="tag">😕 Do not recommend</span>
-          <span class="tag">😐 Tentatively recommend</span>
-          <span class="tag">🙂 Recommend</span>
-          <span class="tag selected">😄 Highly Recommend</span>
+          <span class="tag @(rating == 1 ? "selected" : "")">😕 Do not recommend</span>
+          <span class="tag @(rating == 2 ? "selected" : "")">😐 Tentatively recommend</span>
+          <span class="tag @(rating == 3 ? "selected" : "")">🙂 Recommend</span>
+          <span class="tag @(rating == 4 ? "selected" : "")">😄 Highly Recommend</span>
         </div>
         <div class="summary-text">
           <p class="summary-label">
             What did you think? Evaluate this candidate’s skills,
             qualifications, and potential fit for BAYADA.
           </p>
-          <p class="summary-content">good</p>
-        </div>
-        <div class="character-limit" style="margin-top: 1rem">
-          Character count limit: 200 words
+          <p class="summary-content">@Model.CandidateClinicalScorecards.RatingAndRecommendation.EvaluationNotes</p>
         </div>
       </div>
     </div>
