@@ -565,7 +565,7 @@
       <label>If yes, describe their previous experience.</label>
       <p class="textarea-content placeholder">Enter the previous experience.</p>
       <p class="textarea-content">
-        @Model.CandidateEvaluationDto.IceBreakersAndOpenersDto.PreviousExperiences
+        @Model.CandidateEvaluationDto.IceBreakersAndOpeners.PreviousExperiences
       </p>
     </div>
 
@@ -575,7 +575,7 @@
         Enter the career goals and aspirations.
       </p>
       <p class="textarea-content">
-        @Model.CandidateEvaluationDto.IceBreakersAndOpenersDto.GoalsAndAspirations
+        @Model.CandidateEvaluationDto.IceBreakersAndOpeners.GoalsAndAspirations
       </p>
     </div>
 
@@ -593,7 +593,7 @@
         <div>Expiration date</div>
       </div>
       @foreach (var certificate in
-      Model.CandidateEvaluationDto.CandidateCertificatesDto){
+      Model.CandidateEvaluationDto.CandidateCertificates){
       <div class="license-row">
         <div>@certificate.LicenseType</div>
         <div>@certificate.LicenseNumber</div>
@@ -618,7 +618,7 @@
             <div>
               <div class="label">Candidate address</div>
               <div class="value">
-                @Model.CandidateEvaluationDto.PracticePlacementDto.CandidateAddress
+                @Model.CandidateEvaluationDto.PracticePlacement.CandidateAddress
               </div>
             </div>
           </div>
@@ -627,7 +627,7 @@
             <div>
               <div class="label">Travel time</div>
               <div class="value">
-                @Model.CandidateEvaluationDto.PracticePlacementDto.TravelTime
+                @Model.CandidateEvaluationDto.PracticePlacement.TravelTime
                 Minutes
               </div>
             </div>
@@ -649,9 +649,9 @@
           <strong>Opportunities in this area</strong>
           <div class="subsection">
             <div class="label">Practices</div>
-              @if (Model.CandidateEvaluationDto.PracticePlacementDto?.Practices?.Any() == true)
+              @if (Model.CandidateEvaluationDto.PracticePlacement?.Practices?.Any() == true)
               {
-                  @foreach (var practice in Model.CandidateEvaluationDto.PracticePlacementDto.Practices)
+                  @foreach (var practice in Model.CandidateEvaluationDto.PracticePlacement.Practices)
                   {
                       <div class="tag">@practice</div>
                   }
@@ -664,9 +664,9 @@
 
           <div class="subsection">
             <div class="label">Trainings</div>
-              @if (Model.CandidateEvaluationDto.PracticePlacementDto?.Trainings?.Any() == true)
+              @if (Model.CandidateEvaluationDto.PracticePlacement?.Trainings?.Any() == true)
               {
-                  @foreach (var training in Model.CandidateEvaluationDto.PracticePlacementDto.Trainings)
+                  @foreach (var training in Model.CandidateEvaluationDto.PracticePlacement.Trainings)
                   {
                       <div class="tag">@practice</div>
                   }
@@ -681,9 +681,9 @@
 
       <div class="section">
         <div class="sub-section-title">Client Types</div>
-          @if (Model.CandidateEvaluationDto.PracticePlacementDto?.ClientTypes?.Any() == true)
+          @if (Model.CandidateEvaluationDto.PracticePlacement?.ClientTypes?.Any() == true)
           {
-              @foreach (var clientType in Model.CandidateEvaluationDto.PracticePlacementDto.ClientTypes)
+              @foreach (var clientType in Model.CandidateEvaluationDto.PracticePlacement.ClientTypes)
               {
                   <div class="tag">@clientType</div>
               }
@@ -712,9 +712,9 @@
 
       <div class="section">
         <div class="sub-section-title">Shift Type</div>
-          @if (Model.CandidateEvaluationDto.PracticePlacementDto?.ShiftTypes?.Any() == true)
+          @if (Model.CandidateEvaluationDto.PracticePlacement?.ShiftTypes?.Any() == true)
           {
-              @foreach (var shiftType in Model.CandidateEvaluationDto.PracticePlacementDto.ShiftTypes)
+              @foreach (var shiftType in Model.CandidateEvaluationDto.PracticePlacement.ShiftTypes)
               {
                   <div class="tag">@shiftType</div>
               }
@@ -805,28 +805,54 @@
       </div>
 
       <div class="experience-tags">
-        <span class="tag">🏥 Ambulatory Care/Clinic</span>
-        <span class="tag">🧠 Behavioral health / Mental health</span>
-        <span class="tag">🏘️ Community Based Services</span>
+        @if (Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience?.ClinicalExperience?.Any() == true)
+          {
+              @foreach (var clinicalExperience in Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience.ClinicalExperience)
+              {
+                  <span class="tag">@clinicalExperience</span>
+              }
+          }
+          else
+          {
+              <div class="value muted">Information not provided</div>
+          }
       </div>
 
       <div class="experience-time">
         <div class="label"><b>Experience time</b></div>
-        <div class="value">1 Years</div>
+        @if (Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience?.IsNewToThisField == true)
+          {
+              <div class="value muted">Information not provided</div>
+          }
+          else
+          {
+              <div class="value">@Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience.TotalExperience</div>
+          }
       </div>
 
       <div class="sub-section-title"><span class="icon">✨</span> Skills</div>
 
       <div class="skill-tags">
-        <span class="tag">Catheters</span>
-        <span class="tag">CPR Certified</span>
-        <span class="tag">G-Tube</span>
+        @if (Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience?.Skills?.Any() == true)
+          {
+              @foreach (var skill in Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience.Skills)
+              {
+                  <span class="tag">@skill</span>
+              }
+          }
+          else
+          {
+              <div class="value muted">Information not provided</div>
+          }
       </div>
     </div>
 
     <div class="soft-divider"></div>
 
     <!-------------------------------- BAYADA WAY ----------------------------------->
+    @{
+      var bayada = Model.CandidateEvaluationDto.BayadaWay;
+    }
 
     <div class="bayada-way">
       <div class="section-title">The BAYADA Way</div>
@@ -835,43 +861,55 @@
       </p>
 
       <div class="radio-group">
-        <label
-          ><input type="checkbox" name="bayada-scenario" /> [with healthcare]
-          for a client and their family.</label
-        >
-        <label
-          ><input type="checkbox" name="bayada-scenario" /> [without healthcare]
-          for a customer or co-worker at work.</label
-        >
         <label>
-          <input type="checkbox" name="bayada-scenario" />
-          Tell me about a time when you helped a client achieve their care
-          plan/developmental plan goals. How did you assist the client and what
-          steps did you take to help them reach that achievement?
+            <input type="checkbox" name="bayada-scenario" @(bayada?.IsWithHealthCare == true ? "checked" : "")/>
+            [with healthcare] for a client and their family.
+        </label>
+        <label>
+            <input type="checkbox" name="bayada-scenario" @(bayada?.IsWithoutHealthCare == true ? "checked" : "")/>
+            [without healthcare] for a customer or co-worker at work.
+        </label>
+        <label>
+            <input type="checkbox" name="bayada-scenario" @(bayada?.IsClientGoalAchieved == true ? "checked" : "")/>
+            Tell me about a time when you helped a client achieve their care plan/developmental plan goals. How did you assist the client and what steps did you take to help them reach that achievement?
         </label>
       </div>
 
+      @{
+          var rating = Model.CandidateEvaluationDto.BayadaWay?.Rating;
+      }
+
       <div class="proficiency-tags">
-        <span class="tag">😕 Underdeveloped</span>
-        <span class="tag">🙂 Developing</span>
-        <span class="tag">😐 Competent</span>
-        <span class="tag selected">😎 Highly Proficient</span>
+        <span class="tag @(rating == 1 ? "selected" : "")">😕 Underdeveloped</span>
+        <span class="tag @(rating == 2 ? "selected" : "")">😐 Developing</span>
+        <span class="tag @(rating == 3 ? "selected" : "")">🙂 Competent</span>
+        <span class="tag @(rating == 4 ? "selected" : "")">😎 Highly Proficient</span>
       </div>
 
       <div class="evaluation-box">
         <div class="eval-label">Evaluation</div>
-        <p class="eval-placeholder">
-          Please add your notes for this section of the candidate’s interview.
-        </p>
+        @if (string.IsNullOrWhiteSpace(Model.CandidateEvaluationDto.BayadaWay?.EvaluationNotes))
+        {
+            <p class="eval-placeholder">
+                Please add your notes for this section of the candidate's interview.
+            </p>
+        }
+        else
+        {
+            <p>@Model.CandidateEvaluationDto.BayadaWay.EvaluationNotes</p>
+        }
       </div>
-
-      <div class="character-limit">Character count limit: 200 words</div>
     </div>
 
     <div class="soft-divider"></div>
 
     <!------------------------------ Behavioral Assessment ------------------------------->
 
+    @{
+        var rating = Model.CandidateEvaluationDto.BehavioralAssessment?.Rating;
+        var behavioralAssessment = Model.CandidateEvaluationDto.BehavioralAssessment;
+    }
+    
     <div class="behavioral-assessment">
       <div class="section-title">Behavioral Assessment</div>
 
@@ -879,24 +917,24 @@
         <div class="accordion-title">📘 Client Focused / Critical Thinking</div>
         <div class="question-group">
           <label
-            ><input type="checkbox" name="assessment1[]" /> Tell me about the
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsBiggestChallenge == true ? "checked" : "")/> Tell me about the
             biggest challenge you faced as a caregiver and what you did to
             resolve the challenge for the client.</label
           >
           <label
-            ><input type="checkbox" name="assessment1[]" /> Tell me about a time
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsClientCareWithLackedExperience == true ? "checked" : "")/> Tell me about a time
             when you realized a client needed care you lacked experience with.
             What did you do to ensure the client got the care they
             needed?</label
           >
           <label
-            ><input type="checkbox" name="assessment1[]" /> Your patient is not
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsClientNotFollowTreatment == true ? "checked" : "")/> Your patient is not
             following through with their prescribed treatment plan and
             education, so they are not making progress. How do you
             respond?</label
           >
           <label
-            ><input type="checkbox" name="assessment1[]" /> Describe a time when
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsComplexProblem == true ? "checked" : "")/> Describe a time when
             you were faced with a complex problem at work. How did you go about
             solving it?</label
           >
@@ -907,23 +945,23 @@
         <div class="accordion-title">📣 Communicates Effectively</div>
         <div class="question-group">
           <label
-            ><input type="checkbox" name="assessment1[]" /> Tell me about a time
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsAdjustStyleToAccomodatePatient == true ? "checked" : "")/> Tell me about a time
             when you adjusted your style to accommodate a patient/client and
             build rapport with the client/family?</label
           >
           <label
-            ><input type="checkbox" name="assessment1[]" /> Tell me about a time
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsLackOfCommunicationWithTeam == true ? "checked" : "")/> Tell me about a time
             when a lack of communication between team members led to or could
             have led to a negative patient/client outcome. How did you handle
             it?</label
           >
           <label
-            ><input type="checkbox" name="assessment1[]" /> Tell me about a time
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsCommunicationDifficultyWithSupervisor == true ? "checked" : "")/> Tell me about a time
             when you had difficulty communicating with your supervisor. What
             made it difficult and what did you do to resolve the issue?</label
           >
           <label
-            ><input type="checkbox" name="assessment1[]" /> *Tell me about a
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsCommunicationDifficultyWithSupervisor == true ? "checked" : "")/> *Tell me about a
             time when you had to adjust your communication style at work to deal
             with either a co-worker or customer to build a good relationship or
             address their concerns.</label
@@ -934,12 +972,12 @@
         <div class="accordion-title">🏠 Home Health</div>
         <div class="question-group">
           <label
-            ><input type="checkbox" name="assessment1[]" /> Tell me about the
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.HomeHealth.IsBiggestChallengeFaced == true ? "checked" : "")/> Tell me about the
             biggest challenge you faced as a caregiver and what you did to
             resolve the challenge for the client.</label
           >
           <label
-            ><input type="checkbox" name="assessment1[]" /> Tell me about a time
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.HomeHealth.IsAdjustStyleToAccomodatePatient == true ? "checked" : "")/> Tell me about a time
             when you adjusted your style to accommodate a patient/client and
             build rapport with the client/family?</label
           >
@@ -949,12 +987,12 @@
         <div class="accordion-title">🏥 SNU</div>
         <div class="question-group">
           <label
-            ><input type="checkbox" name="assessment1[]" /> Explain a time you
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.SNU.IsInvolvedInEmergency == true ? "checked" : "")/> Explain a time you
             were involved in an emergency with a patient and how did you
             respond.</label
           >
           <label
-            ><input type="checkbox" name="assessment1[]" /> Tell me about a time
+            ><input type="checkbox" name="assessment1[]" @(behavioralAssessment?.SNU.IsFamilyInterviningInCare == true ? "checked" : "")/> Tell me about a time
             where the family was intervening in care or directing care and how
             did you handle the situation?</label
           >
@@ -962,20 +1000,25 @@
       </div>
 
       <div class="proficiency-tags">
-        <span class="tag">😕 Underdeveloped</span>
-        <span class="tag">🙂 Developing</span>
-        <span class="tag">😐 Competent</span>
-        <span class="tag selected">😎 Highly Proficient</span>
+        <span class="tag @(rating == 1 ? "selected" : "")">😕 Underdeveloped</span>
+        <span class="tag @(rating == 2 ? "selected" : "")">😐 Developing</span>
+        <span class="tag @(rating == 3 ? "selected" : "")">🙂 Competent</span>
+        <span class="tag @(rating == 4 ? "selected" : "")">😎 Highly Proficient</span>
       </div>
 
       <div class="evaluation-box">
         <div class="eval-label">Evaluation</div>
-        <p class="eval-placeholder">
-          Please add your notes for this section of the candidate’s interview.
-        </p>
+        @if (string.IsNullOrWhiteSpace(Model.CandidateEvaluationDto.BehavioralAssessment?.EvaluationNotes))
+        {
+            <p class="eval-placeholder">
+                Please add your notes for this section of the candidate's interview.
+            </p>
+        }
+        else
+        {
+            <p>@Model.CandidateEvaluationDto.BehavioralAssessment.EvaluationNotes</p>
+        }
       </div>
-
-      <div class="character-limit">Character count limit: 200 words</div>
     </div>
 
     <div class="soft-divider"></div>
