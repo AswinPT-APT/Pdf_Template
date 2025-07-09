@@ -523,6 +523,11 @@
         max-width: 140px;
         width: 100%;
       }
+
+      .page-break-avoid {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
     </style>
   </head>
   <body>
@@ -797,7 +802,7 @@
           .OrderBy(g => g.Key);
     }
 
-    <div class="work-preferences">
+    <div class="work-preferences page-break-avoid">
     <div class="section-title">Work Preferences</div>
 
     <div class="section">
@@ -1225,7 +1230,7 @@
 
     <!------------------------------ Rating Recommendation -------------------------------->
 
-    <div class="rating-recommendation">
+    <div class="rating-recommendation page-break-avoid">
       <div class="section-title">Rating &amp; Recommendation</div>
 
       <div class="field-row">
