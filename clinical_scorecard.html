@@ -1,3 +1,5 @@
+@using Bayada.Joy.Messaging.Application.Dtos;
+@using Bayada.Joy.Messaging.Application.Services;
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -520,28 +522,28 @@
     <!---------------------------------------- Header ---------------------------------------->
     <div class="card">
       <div class="card-header">
-        <h2>Clinical Scorecards | @Model.CandidateEvaluationDto.JobTitle</h2>
+        <h2>Clinical Scorecards | @Model.CandidateClinicalScorecards.JobTitle</h2>
         <span class="status">Submitted</span>
       </div>
       <div class="card-details">
         <div class="info-group">
           <span class="icon">📝</span> Clinical Interview
           <span class="icon" style="margin-left: 1rem">🌐</span>
-          @Model.CandidateEvaluationDto.InterviewLanguage
+          @Model.CandidateClinicalScorecards.InterviewLanguage
           <span class="icon" style="margin-left: 1rem">📅</span>
-          @Model.CandidateEvaluationDto.ScheduledDate |
-          @Model.CandidateEvaluationDto.FormattedStartTime -
-          @Model.CandidateEvaluationDto.FormattedEndTime (IST)
+          @Model.CandidateClinicalScorecards.ScheduledDate |
+          @Model.CandidateClinicalScorecards.FormattedStartTime -
+          @Model.CandidateClinicalScorecards.FormattedEndTime (IST)
         </div>
         <div class="info-group">
           <strong>Candidate:</strong>
           <span class="chip">AT</span>
-          @Model.CandidateEvaluationDto.CandidateName &nbsp;&nbsp;
+          @Model.CandidateClinicalScorecards.CandidateName &nbsp;&nbsp;
           <strong>Author:</strong>
-          <span class="author">@Model.CandidateEvaluationDto.EmployeeName</span>
+          <span class="author">@Model.CandidateClinicalScorecards.EmployeeName</span>
           &nbsp;&nbsp;
-          <span>Created: @Model.CandidateEvaluationDto.CreatedDateTime</span> |
-          <span>Updated: @Model.CandidateEvaluationDto.UpdatedDateTime</span>
+          <span>Created: @Model.CandidateClinicalScorecards.CreatedDateTime</span> |
+          <span>Updated: @Model.CandidateClinicalScorecards.UpdatedDateTime</span>
         </div>
       </div>
     </div>
@@ -553,11 +555,11 @@
       <label class="question-label">Are they a previous employee?</label>
       <div class="toggle-buttons">
         <div class="toggle-button
-        @(Model.CandidateEvaluationDto.IceBreakersAndOpeners.IsFormerEmployee ?
+        @(Model.CandidateClinicalScorecards.IceBreakersAndOpeners.IsFormerEmployee ?
         "selected" : "")">✔️ Yes
       </div>
       <div class="toggle-button
-      @(!Model.CandidateEvaluationDto.IceBreakersAndOpeners.IsFormerEmployee ?
+      @(!Model.CandidateClinicalScorecards.IceBreakersAndOpeners.IsFormerEmployee ?
       "selected" : "")">❌ No
     </div>
 
@@ -565,7 +567,7 @@
       <label>If yes, describe their previous experience.</label>
       <p class="textarea-content placeholder">Enter the previous experience.</p>
       <p class="textarea-content">
-        @Model.CandidateEvaluationDto.IceBreakersAndOpeners.PreviousExperiences
+        @Model.CandidateClinicalScorecards.IceBreakersAndOpeners.PreviousExperiences
       </p>
     </div>
 
@@ -575,7 +577,7 @@
         Enter the career goals and aspirations.
       </p>
       <p class="textarea-content">
-        @Model.CandidateEvaluationDto.IceBreakersAndOpeners.GoalsAndAspirations
+        @Model.CandidateClinicalScorecards.IceBreakersAndOpeners.GoalsAndAspirations
       </p>
     </div>
 
@@ -593,7 +595,7 @@
         <div>Expiration date</div>
       </div>
       @foreach (var certificate in
-      Model.CandidateEvaluationDto.CandidateCertificates){
+      Model.CandidateClinicalScorecards.CandidateCertificates){
       <div class="license-row">
         <div>@certificate.LicenseType</div>
         <div>@certificate.LicenseNumber</div>
@@ -608,141 +610,137 @@
 
     <!-------------------------------- Practice Placement ----------------------------------->
 
-    <div class="practice-placement">
-      <div class="section-title">Practice Placement</div>
+<div class="practice-placement">
+  <div class="section-title">Practice Placement</div>
 
-      <div class="section service-area">
-        <div class="icon-row">
-          <div class="item">
-            <span class="icon">📍</span>
-            <div>
-              <div class="label">Candidate address</div>
-              <div class="value">
-                @Model.CandidateEvaluationDto.PracticePlacement.CandidateAddress
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <span class="icon">⏱️</span>
-            <div>
-              <div class="label">Travel time</div>
-              <div class="value">
-                @Model.CandidateEvaluationDto.PracticePlacement.TravelTime
-                Minutes
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <span class="icon">🚌</span>
-            <div>
-              <div class="label">Needs public transit?</div>
-              <div class="value">
-                @{ var transport =
-                Model.CandidateEvaluationDto.PracticePlacement?.IsPublicTransportNeeded;
-                } @(transport.HasValue ? (transport.Value ? "Yes" : "No") : "-")
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="opportunities-box">
-          <strong>Opportunities in this area</strong>
-          <div class="subsection">
-            <div class="label">Practices</div>
-              @if (Model.CandidateEvaluationDto.PracticePlacement?.Practices?.Any() == true)
-              {
-                  @foreach (var practice in Model.CandidateEvaluationDto.PracticePlacement.Practices)
-                  {
-                      <div class="tag">@practice</div>
-                  }
-              }
-              else
-              {
-                  <div class="value muted">Practice and trainings not available based on the preference</div>
-              }
-          </div>
-
-          <div class="subsection">
-            <div class="label">Trainings</div>
-              @if (Model.CandidateEvaluationDto.PracticePlacement?.Trainings?.Any() == true)
-              {
-                  @foreach (var training in Model.CandidateEvaluationDto.PracticePlacement.Trainings)
-                  {
-                      <div class="tag">@practice</div>
-                  }
-              }
-              else
-              {
-                  <div class="value muted">Practice and trainings not available based on the preference</div>
-              }
-          </div>
+  <div class="section service-area">
+    <div class="icon-row">
+      <div class="item">
+        <span class="icon">📍</span>
+        <div>
+          <div class="label">Candidate address</div>
+          <div class="value">@Model.CandidateClinicalScorecards.PracticePlacement.CandidateAddress</div>
         </div>
       </div>
-
-      <div class="section">
-        <div class="sub-section-title">Client Types</div>
-          @if (Model.CandidateEvaluationDto.PracticePlacement?.ClientTypes?.Any() == true)
-          {
-              @foreach (var clientType in Model.CandidateEvaluationDto.PracticePlacement.ClientTypes)
-              {
-                  <div class="tag">@clientType</div>
-              }
-          }
-          else
-          {
-              <div class="value muted">Information not provided</div>
-          }
+      <div class="item">
+        <span class="icon">⏱️</span>
+        <div>
+          <div class="label">Travel time</div>
+          <div class="value">@Model.CandidateClinicalScorecards.PracticePlacement.TravelTime Minutes</div>
+        </div>
       </div>
-
-      <div class="section">
-        <div class="sub-section-title">Willing to Transport Clients</div>
-        @{
-            var willing = Model.CandidateEvaluationDto.PracticePlacement?.WillingToTransportClient;
-        }
-        @if (!willing.HasValue)
-        {
-            <div class="value muted">Information not provided</div>
-        }
-        else
-        {
-            <div class="value">@((willing.Value) ? "Yes" : "No")</div>
-        }
-      </div>
-
-
-      <div class="section">
-        <div class="sub-section-title">Shift Type</div>
-          @if (Model.CandidateEvaluationDto.PracticePlacement?.ShiftTypes?.Any() == true)
-          {
-              @foreach (var shiftType in Model.CandidateEvaluationDto.PracticePlacement.ShiftTypes)
-              {
-                  <div class="tag">@shiftType</div>
-              }
-          }
-          else
-          {
-              <div class="value muted">Information not provided</div>
-          }
+      <div class="item">
+        <span class="icon">🚌</span>
+        <div>
+          <div class="label">Needs public transit?</div>
+          <div class="value">
+            @{
+              var transport = Model.CandidateClinicalScorecards.PracticePlacement?.IsPublicTransportNeeded;
+            }
+            @(transport.HasValue ? (transport.Value ? "Yes" : "No") : "Information not provided")
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="soft-divider"></div>
+    <div class="opportunities-box">
+      <strong>Opportunities in this area</strong>
+      <div class="subsection">
+        <div class="label">Practices</div>
+        @if (Model.CandidateClinicalScorecards.PracticePlacement?.Practices?.Any() == true)
+        {
+          @foreach (var practice in Model.CandidateClinicalScorecards.PracticePlacement.Practices)
+          {
+            <div class="tag">@practice</div>
+          }
+        }
+        else
+        {
+          <div class="value muted">Practice and trainings not available based on the preference</div>
+        }
+      </div>
+
+      <div class="subsection">
+        <div class="label">Trainings</div>
+        @if (Model.CandidateClinicalScorecards.PracticePlacement?.Trainings?.Any() == true)
+        {
+          @foreach (var training in Model.CandidateClinicalScorecards.PracticePlacement.Trainings)
+          {
+            <div class="tag">@training</div>
+          }
+        }
+        else
+        {
+          <div class="value muted">Practice and trainings not available based on the preference</div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sub-section-title">Client Types</div>
+    @if (Model.CandidateClinicalScorecards.PracticePlacement?.ClientTypes?.Any() == true)
+    {
+      @foreach (var clientType in Model.CandidateClinicalScorecards.PracticePlacement.ClientTypes)
+      {
+        <div class="tag">@clientType</div>
+      }
+    }
+    else
+    {
+      <div class="value muted">Information not provided</div>
+    }
+  </div>
+
+  <div class="section">
+    <div class="sub-section-title">Willing to Transport Clients</div>
+    @{
+      var willing = Model.CandidateClinicalScorecards.PracticePlacement?.WillingToTransportClient;
+    }
+    @if (string.IsNullOrEmpty(willing))
+    {
+      <div class="value muted">Information not provided</div>
+    }
+    else
+    {
+      <div class="value">@((willing == "Yes") ? "Yes" : "No")</div>
+    }
+  </div>
+
+  <div class="section">
+    <div class="sub-section-title">Shift Type</div>
+    @if (Model.CandidateClinicalScorecards.PracticePlacement?.ShiftTypes?.Any() == true)
+    {
+      @foreach (var shiftType in Model.CandidateClinicalScorecards.PracticePlacement.ShiftTypes)
+      {
+        <div class="tag">@shiftType</div>
+      }
+    }
+    else
+    {
+      <div class="value muted">Information not provided</div>
+    }
+  </div>
+</div>
+
+<div class="soft-divider"></div>
+
 
     <!-------------------------------- Work Preferences ----------------------------------->
 
     @{
-      var dayMap = new Dictionary<int, string>
+      var dayMap = new Dictionary<string, string>
       {
-          { 1, "M" },
-          { 2, "T" },
-          { 3, "W" },
-          { 4, "T" },
-          { 5, "F" },
-          { 6, "S" },
-          { 7, "S" }
+          { "1", "M" },
+          { "2", "T" },
+          { "3", "W" },
+          { "4", "T" },
+          { "5", "F" },
+          { "6", "S" },
+          { "7", "S" }
       };
 
-      var availabilitySlots = Model.CandidateEvaluationDto.WorkPreferences?.AvailabilitySlots ?? new List<AvailabilitySlotDto>();
+      var availabilitySlots = (Model?.CandidateClinicalScorecards?.WorkPreferences.AvailabilitySlots ?? Array.Empty<AvailabilitySlotDto>()).ToList();
 
       var groupedSlots = availabilitySlots
           .GroupBy(s => s.Day)
@@ -774,7 +772,7 @@
                                   if (slot.AvailableSlotFromTime != null && slot.AvailableSlotToTime != null)
                                   {
                                       <div>
-                                          @slot.AvailableSlotFromTime?.ToString("hh:mm tt") to @slot.AvailableSlotToTime?.ToString("hh:mm tt")
+                                        @slot.AvailableSlotFromTime to @slot.AvailableSlotToTime
                                       </div>
                                   }
                               }
@@ -789,7 +787,7 @@
           <div class="sub-section-title">
               <span class="icon">⏱️</span> Desired hours per week
           </div>
-          <div class="value">@Model.CandidateEvaluationDto.WorkPreferences?.DesiredHoursPerWeek Hours</div>
+          <div class="value">@Model.CandidateClinicalScorecards.WorkPreferences?.DesiredHoursPerWeek Hours</div>
       </div>
     </div>
 
@@ -805,9 +803,9 @@
       </div>
 
       <div class="experience-tags">
-        @if (Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience?.ClinicalExperience?.Any() == true)
+        @if (Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience?.ClinicalExperience?.Any() == true)
           {
-              @foreach (var clinicalExperience in Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience.ClinicalExperience)
+              @foreach (var clinicalExperience in Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience.ClinicalExperience)
               {
                   <span class="tag">@clinicalExperience</span>
               }
@@ -820,22 +818,22 @@
 
       <div class="experience-time">
         <div class="label"><b>Experience time</b></div>
-        @if (Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience?.IsNewToThisField == true)
+        @if (Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience?.IsNewToThisField == true)
           {
               <div class="value muted">Information not provided</div>
           }
           else
           {
-              <div class="value">@Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience.TotalExperience</div>
+              <div class="value">@Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience.TotalExperience</div>
           }
       </div>
 
       <div class="sub-section-title"><span class="icon">✨</span> Skills</div>
 
       <div class="skill-tags">
-        @if (Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience?.Skills?.Any() == true)
+        @if (Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience?.Skills?.Any() == true)
           {
-              @foreach (var skill in Model.CandidateEvaluationDto.CandidateClinicalSkillsAndExperience.Skills)
+              @foreach (var skill in Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience.Skills)
               {
                   <span class="tag">@skill</span>
               }
@@ -851,7 +849,7 @@
 
     <!-------------------------------- BAYADA WAY ----------------------------------->
     @{
-      var bayada = Model.CandidateEvaluationDto.BayadaWay;
+      var bayada = Model.CandidateClinicalScorecards.BayadaWay;
     }
 
     <div class="bayada-way">
@@ -876,19 +874,19 @@
       </div>
 
       @{
-          var rating = Model.CandidateEvaluationDto.BayadaWay?.Rating;
+          var ratingBayadaWay = Model.CandidateClinicalScorecards.BayadaWay?.Rating;
       }
 
       <div class="proficiency-tags">
-        <span class="tag @(rating == 1 ? "selected" : "")">😕 Underdeveloped</span>
-        <span class="tag @(rating == 2 ? "selected" : "")">😐 Developing</span>
-        <span class="tag @(rating == 3 ? "selected" : "")">🙂 Competent</span>
-        <span class="tag @(rating == 4 ? "selected" : "")">😎 Highly Proficient</span>
+        <span class="tag @(ratingBayadaWay == 1 ? "selected" : "")">😕 Underdeveloped</span>
+        <span class="tag @(ratingBayadaWay == 2 ? "selected" : "")">😐 Developing</span>
+        <span class="tag @(ratingBayadaWay == 3 ? "selected" : "")">🙂 Competent</span>
+        <span class="tag @(ratingBayadaWay == 4 ? "selected" : "")">😎 Highly Proficient</span>
       </div>
 
       <div class="evaluation-box">
         <div class="eval-label">Evaluation</div>
-        @if (string.IsNullOrWhiteSpace(Model.CandidateEvaluationDto.BayadaWay?.EvaluationNotes))
+        @if (string.IsNullOrWhiteSpace(Model.CandidateClinicalScorecards.BayadaWay?.EvaluationNotes))
         {
             <p class="eval-placeholder">
                 Please add your notes for this section of the candidate's interview.
@@ -896,7 +894,7 @@
         }
         else
         {
-            <p>@Model.CandidateEvaluationDto.BayadaWay.EvaluationNotes</p>
+            <p>@Model.CandidateClinicalScorecards.BayadaWay.EvaluationNotes</p>
         }
       </div>
     </div>
@@ -906,8 +904,8 @@
     <!------------------------------ Behavioral Assessment ------------------------------->
 
     @{
-        var rating = Model.CandidateEvaluationDto.BehavioralAssessment?.Rating;
-        var behavioralAssessment = Model.CandidateEvaluationDto.BehavioralAssessment;
+        var rating = Model.CandidateClinicalScorecards.BehavioralAssessment?.Rating;
+        var behavioralAssessment = Model.CandidateClinicalScorecards.BehavioralAssessment;
     }
     
     <div class="behavioral-assessment">
@@ -1008,7 +1006,7 @@
 
       <div class="evaluation-box">
         <div class="eval-label">Evaluation</div>
-        @if (string.IsNullOrWhiteSpace(Model.CandidateEvaluationDto.BehavioralAssessment?.EvaluationNotes))
+        @if (string.IsNullOrWhiteSpace(Model.CandidateClinicalScorecards.BehavioralAssessment?.EvaluationNotes))
         {
             <p class="eval-placeholder">
                 Please add your notes for this section of the candidate's interview.
@@ -1016,7 +1014,7 @@
         }
         else
         {
-            <p>@Model.CandidateEvaluationDto.BehavioralAssessment.EvaluationNotes</p>
+            <p>@Model.CandidateClinicalScorecards.BehavioralAssessment.EvaluationNotes</p>
         }
       </div>
     </div>
@@ -1073,17 +1071,17 @@
       <div class="field">
         <label class="required"><span class="icon">📝</span> Recruiter summary</label>
         @{
-          var rating = Model.CandidateEvaluationDto.BayadaWay?.Rating;
+          var ratingAndRecommendation = Model.CandidateClinicalScorecards.RatingAndRecommendation?.Rating;
         }
         <div class="proficiency-tags">
-          <span class="tag @(rating == 1 ? "selected" : "")">😕 Do not recommend</span>
-          <span class="tag @(rating == 2 ? "selected" : "")">😐 Tentatively recommend</span>
-          <span class="tag @(rating == 3 ? "selected" : "")">🙂 Recommend</span>
-          <span class="tag @(rating == 4 ? "selected" : "")">😄 Highly Recommend</span>
+          <span class="tag @(ratingAndRecommendation == 1 ? "selected" : "")">😕 Do not recommend</span>
+          <span class="tag @(ratingAndRecommendation == 2 ? "selected" : "")">😐 Tentatively recommend</span>
+          <span class="tag @(ratingAndRecommendation == 3 ? "selected" : "")">🙂 Recommend</span>
+          <span class="tag @(ratingAndRecommendation == 4 ? "selected" : "")">😄 Highly Recommend</span>
         </div>
         <div class="summary-text">
           <p class="summary-label">
-            What did you think? Evaluate this candidate’s skills,
+            What did you think? Evaluate this candidate’s skills,s
             qualifications, and potential fit for BAYADA.
           </p>
           <p class="summary-content">@Model.CandidateClinicalScorecards.RatingAndRecommendation.EvaluationNotes</p>
