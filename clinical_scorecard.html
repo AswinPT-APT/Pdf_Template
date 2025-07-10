@@ -533,8 +533,8 @@
   <body>
     <!---------------------------------------- Header ---------------------------------------->
     @{
-        var candidateName = Model.CandidateClinicalScorecards.CandidateName ?? "";
-        var employeeName = Model.CandidateClinicalScorecards.CandidateName ?? "";;
+        var candidateName = Model.CandidateScorecards.CandidateName ?? "";
+        var employeeName = Model.CandidateScorecards.CandidateName ?? "";;
         var candidateInitials = string.Join("", candidateName
             .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
             .Take(2)
@@ -545,688 +545,702 @@
             .Take(2)
             .Select(n => n[0]))
             .ToUpper();
+
+        var scorecardType = Model.CandidateScorecards.ScorecardType;
+        var interviewType = scorecardType switch
+            {
+                1 => "Clinical",
+                2 => "Non-Clinical",
+                3 => "Other",
+                _ => "Clinical"
+            };
     }
 
     <div class="card">
       <div class="card-header">
-        <h2>Clinical Scorecards | @Model.CandidateClinicalScorecards.JobTitle</h2>
+        <h2>@interviewType Scorecards | @Model.CandidateScorecards.JobTitle</h2>
         <span class="status">Submitted</span>
       </div>
       <div class="card-details">
         <div class="info-group">
-          <span class="icon">✎</span> Clinical Interview
+          <span class="icon">✎</span> @interviewType Interview
           <span class="icon" style="margin-left: 1rem"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm6.93 6h-3.26a13.9 13.9 0 0 0-1.18-3.3A8.06 8.06 0 0 1 18.93 8ZM12 4.07A11.776 11.776 0 0 1 13.72 8h-3.44A11.776 11.776 0 0 1 12 4.07ZM8.51 4.7A13.9 13.9 0 0 0 7.33 8H4.07a8.06 8.06 0 0 1 4.44-3.3ZM4.07 10h3.56a15.276 15.276 0 0 0 0 4H4.07a8.031 8.031 0 0 1 0-4Zm.86 6h3.26a13.9 13.9 0 0 0 1.18 3.3A8.06 8.06 0 0 1 4.93 16Zm7.07 3.93A11.776 11.776 0 0 1 10.28 16h3.44A11.776 11.776 0 0 1 12 19.93ZM15.49 19.3A13.9 13.9 0 0 0 16.67 16h3.26a8.06 8.06 0 0 1-4.44 3.3ZM16.37 14H7.63a13.2 13.2 0 0 1 0-4h8.74a13.2 13.2 0 0 1 0 4Zm.0-6a13.9 13.9 0 0 0-1.18-3.3A8.06 8.06 0 0 1 18.93 8Z"/>
           </svg></span>
-          @Model.CandidateClinicalScorecards.InterviewLanguage
+          @Model.CandidateScorecards.InterviewLanguage
           <span class="icon" style="margin-left: 1rem"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
             <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 
                      2v14a2 2 0 0 0 2 2h14a2 2 0 0 
                      0 2-2V6a2 2 0 0 0-2-2Zm0 16H5V10h14v10Zm0-12H5V6h14v2Z"/>
           </svg></span>
-          @Model.CandidateClinicalScorecards.ScheduledDate |
-          @Model.CandidateClinicalScorecards.FormattedStartTime -
-          @Model.CandidateClinicalScorecards.FormattedEndTime  (@Model.CandidateClinicalScorecards.Timezone)
+          @Model.CandidateScorecards.ScheduledDate |
+          @Model.CandidateScorecards.FormattedStartTime -
+          @Model.CandidateScorecards.FormattedEndTime  (@Model.CandidateScorecards.Timezone)
         </div>
         <div class="info-group">
           <strong>Candidate:</strong>
           <span class="chip">@candidateInitials</span>
-          @Model.CandidateClinicalScorecards.CandidateName &nbsp;&nbsp;
+          @Model.CandidateScorecards.CandidateName &nbsp;&nbsp;
           <strong>Author:</strong>
           <span class="chip">@employeeInitials</span>
-          <span class="author">@Model.CandidateClinicalScorecards.EmployeeName</span>
+          <span class="author">@Model.CandidateScorecards.EmployeeName</span>
           &nbsp;&nbsp;
-          <span>Created: @Model.CandidateClinicalScorecards.CreatedDateTime</span> |
-          <span>Updated: @Model.CandidateClinicalScorecards.UpdatedDateTime</span>
+          <span>Created: @Model.CandidateScorecards.CreatedDateTime</span> |
+          <span>Updated: @Model.CandidateScorecards.UpdatedDateTime</span>
         </div>
       </div>
     </div>
 
-    <!----------------------------------- Icebreakers --------------------------------------->
     <div class="card">
+    
+    @if(scorecardType != 3)
+    {
+      <!----------------------------------- Icebreakers --------------------------------------->
       <div class="section-title">Icebreakers & Openers</div>
-
       <label class="question-label">Are they a previous employee?</label>
       <div class="toggle-buttons">
         <div class="toggle-button
-            @(Model.CandidateClinicalScorecards.IceBreakersAndOpeners.IsFormerEmployee ?
+            @(Model.CandidateScorecards.IceBreakersAndOpeners.IsFormerEmployee ?
             "selected" : "")">✔ Yes
         </div>
         <div class="toggle-button
-            @(!Model.CandidateClinicalScorecards.IceBreakersAndOpeners.IsFormerEmployee ?
+            @(!Model.CandidateScorecards.IceBreakersAndOpeners.IsFormerEmployee ?
             "selected" : "")">✘ No
         </div>
       </div>
 
-    <div class="textarea-group">
-      <label>If yes, describe their previous experience.</label>
-      @if (string.IsNullOrEmpty(@Model.CandidateClinicalScorecards.IceBreakersAndOpeners.PreviousExperiences))
-      {
-        <p class="textarea-content placeholder">Enter the previous experience.</p>
-      }
-      <p class="textarea-content">@Model.CandidateClinicalScorecards.IceBreakersAndOpeners.PreviousExperiences
-      </p>
-    </div>
-
-    <div class="textarea-group alt-bg">
-      <label>What are their career goals and aspirations?</label>
-      @if (string.IsNullOrEmpty(@Model.CandidateClinicalScorecards.IceBreakersAndOpeners.GoalsAndAspirations))
-      {
-        <p class="textarea-content placeholder">Enter the career goals and aspirations.</p>
-      }
-      <p class="textarea-content">@Model.CandidateClinicalScorecards.IceBreakersAndOpeners.GoalsAndAspirations
-      </p>
-    </div>
-
-    <div class="soft-divider"></div>
-
-    <!----------------------------- Licenses & Certifications ------------------------------->
-
-    <div class="section-title">Licenses & Certifications</div>
-    @if (Model.CandidateClinicalScorecards.CandidateCertificates == null && !Model.CandidateClinicalScorecards.CandidateCertificates.Any())
-    {
-        <p class=textarea-content>Information not provided</p>
-    }
-    <table class="license-table">
-      <thead>
-        <tr>
-          <th>License type</th>
-          <th>License number</th>
-          <th>State</th>
-          <th>Status</th>
-          <th>Expiration date</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach (var certificate in Model.CandidateClinicalScorecards.CandidateCertificates)
+      <div class="textarea-group">
+        <label>If yes, describe their previous experience.</label>
+        @if (string.IsNullOrEmpty(@Model.CandidateScorecards.IceBreakersAndOpeners.PreviousExperiences))
         {
-          <tr>
-            <td>@certificate.LicenseType</td>
-            <td>@certificate.LicenseNumber</td>
-            <td>@certificate.State</td>
-            <td>@certificate.LicenseStatus</td>
-            <td>@certificate.ExpirationDate</td>
-          </tr>
+          <p class="textarea-content placeholder">Enter the previous experience.</p>
         }
-      </tbody>
-    </table>
+        <p class="textarea-content">@Model.CandidateScorecards.IceBreakersAndOpeners.PreviousExperiences
+        </p>
+      </div>
 
-    <div class="soft-divider"></div>
+      <div class="textarea-group alt-bg">
+        <label>What are their career goals and aspirations?</label>
+        @if (string.IsNullOrEmpty(@Model.CandidateScorecards.IceBreakersAndOpeners.GoalsAndAspirations))
+        {
+          <p class="textarea-content placeholder">Enter the career goals and aspirations.</p>
+        }
+        <p class="textarea-content">@Model.CandidateScorecards.IceBreakersAndOpeners.GoalsAndAspirations
+        </p>
+      </div>
 
-    <!-------------------------------- Practice Placement ----------------------------------->
+      <div class="soft-divider"></div>
 
-<div class="practice-placement">
-  <div class="section-title">Practice Placement</div>
+      <!----------------------------- Licenses & Certifications ------------------------------->
 
-  <div class="section service-area">
-    <table class="icon-row">
-      <tr>
-        <td class="item">
-          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 0a5.53 5.53 0 0 0-5.5 5.5c0 3.038 5.5 10.5 5.5 10.5s5.5-7.462 5.5-10.5A5.53 5.53 0 0 0 8 0zm0 7.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
-          </svg></div>
-          <div>
-            <div class="label">Candidate address</div>
-            <div class="value">@Model.CandidateClinicalScorecards.PracticePlacement.CandidateAddress</div>
-          </div>
-        </td>
-        <td class="item">
-          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 3.5a.5.5 0 0 1 .5.5v4.25l3.25 1.95a.5.5 0 0 1-.5.85l-3.5-2.1A.5.5 0 0 1 7.5 8V4a.5.5 0 0 1 .5-.5z"/>
-            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"/>
-          </svg></div>
-          <div>
-            <div class="label">Travel time</div>
-            <div class="value">@Model.CandidateClinicalScorecards.PracticePlacement.TravelTime Minutes</div>
-          </div>
-        </td>
-        <td class="item">
-          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M3 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM13 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-            <path fill-rule="evenodd" d="M1 1a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-1v-1H3v1H2a1 1 0 0 1-1-1V1zm1 1v4h12V2H2zm12 5H2v4h12V7z"/>
-          </svg></div>
-          <div>
-            <div class="label">Needs public transit?</div>
-            <div class="value">
-              @{
-                var transport = Model.CandidateClinicalScorecards.PracticePlacement?.IsPublicTransportNeeded;
+      <div class="section-title">Licenses & Certifications</div>
+      @if (Model.CandidateScorecards.CandidateCertificates == null && !Model.CandidateScorecards.CandidateCertificates.Any())
+      {
+          <p class=textarea-content>Information not provided</p>
+      }
+      <table class="license-table">
+        <thead>
+          <tr>
+            <th>License type</th>
+            <th>License number</th>
+            <th>State</th>
+            <th>Status</th>
+            <th>Expiration date</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var certificate in Model.CandidateScorecards.CandidateCertificates)
+          {
+            <tr>
+              <td>@certificate.LicenseType</td>
+              <td>@certificate.LicenseNumber</td>
+              <td>@certificate.State</td>
+              <td>@certificate.LicenseStatus</td>
+              <td>@certificate.ExpirationDate</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="soft-divider"></div>
+
+      <!-------------------------------- Practice Placement ----------------------------------->
+
+      <div class="practice-placement">
+        <div class="section-title">Practice Placement</div>
+
+        <div class="section service-area">
+          <table class="icon-row">
+            <tr>
+              <td class="item">
+                <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M8 0a5.53 5.53 0 0 0-5.5 5.5c0 3.038 5.5 10.5 5.5 10.5s5.5-7.462 5.5-10.5A5.53 5.53 0 0 0 8 0zm0 7.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+                </svg></div>
+                <div>
+                  <div class="label">Candidate address</div>
+                  <div class="value">@Model.CandidateScorecards.PracticePlacement.CandidateAddress</div>
+                </div>
+              </td>
+              <td class="item">
+                <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M8 3.5a.5.5 0 0 1 .5.5v4.25l3.25 1.95a.5.5 0 0 1-.5.85l-3.5-2.1A.5.5 0 0 1 7.5 8V4a.5.5 0 0 1 .5-.5z"/>
+                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"/>
+                </svg></div>
+                <div>
+                  <div class="label">Travel time</div>
+                  <div class="value">@Model.CandidateScorecards.PracticePlacement.TravelTime Minutes</div>
+                </div>
+              </td>
+              <td class="item">
+                <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M3 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM13 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                  <path fill-rule="evenodd" d="M1 1a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-1v-1H3v1H2a1 1 0 0 1-1-1V1zm1 1v4h12V2H2zm12 5H2v4h12V7z"/>
+                </svg></div>
+                <div>
+                  <div class="label">Needs public transit?</div>
+                  <div class="value">
+                    @{
+                      var transport = Model.CandidateScorecards.PracticePlacement?.IsPublicTransportNeeded;
+                    }
+                    @(transport.HasValue ? (transport.Value ? "Yes" : "No") : "Information not provided")
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <div class="opportunities-box">
+            <strong>Opportunities in this area</strong>
+            <div class="subsection">
+              <div class="label">Practices</div>
+              @if (Model.CandidateScorecards.PracticePlacement?.Practices?.Any() == true)
+              {
+                @foreach (var practice in Model.CandidateScorecards.PracticePlacement.Practices)
+                {
+                  <div class="tag">@practice</div>
+                }
               }
-              @(transport.HasValue ? (transport.Value ? "Yes" : "No") : "Information not provided")
+              else
+              {
+                <div class="value muted">Practice and trainings not available based on the preference</div>
+              }
+            </div>
+
+            <div class="subsection">
+              <div class="label">Trainings</div>
+              @if (Model.CandidateScorecards.PracticePlacement?.Trainings?.Any() == true)
+              {
+                @foreach (var training in Model.CandidateScorecards.PracticePlacement.Trainings)
+                {
+                  <div class="tag">@training</div>
+                }
+              }
+              else
+              {
+                <div class="value muted">Practice and trainings not available based on the preference</div>
+              }
             </div>
           </div>
-        </td>
-      </tr>
-    </table>
-
-    <div class="opportunities-box">
-      <strong>Opportunities in this area</strong>
-      <div class="subsection">
-        <div class="label">Practices</div>
-        @if (Model.CandidateClinicalScorecards.PracticePlacement?.Practices?.Any() == true)
-        {
-          @foreach (var practice in Model.CandidateClinicalScorecards.PracticePlacement.Practices)
-          {
-            <div class="tag">@practice</div>
-          }
-        }
-        else
-        {
-          <div class="value muted">Practice and trainings not available based on the preference</div>
-        }
-      </div>
-
-      <div class="subsection">
-        <div class="label">Trainings</div>
-        @if (Model.CandidateClinicalScorecards.PracticePlacement?.Trainings?.Any() == true)
-        {
-          @foreach (var training in Model.CandidateClinicalScorecards.PracticePlacement.Trainings)
-          {
-            <div class="tag">@training</div>
-          }
-        }
-        else
-        {
-          <div class="value muted">Practice and trainings not available based on the preference</div>
-        }
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="sub-section-title">Client Types</div>
-    @if (Model.CandidateClinicalScorecards.PracticePlacement?.ClientTypes?.Any() == true)
-    {
-      @foreach (var clientType in Model.CandidateClinicalScorecards.PracticePlacement.ClientTypes)
-      {
-        <div class="tag">@clientType</div>
-      }
-    }
-    else
-    {
-      <div class="value muted">Information not provided</div>
-    }
-  </div>
-
-  <div class="section">
-    <div class="sub-section-title">Willing to Transport Clients</div>
-    @{
-      var willing = Model.CandidateClinicalScorecards.PracticePlacement?.WillingToTransportClient;
-    }
-    @if (string.IsNullOrEmpty(willing))
-    {
-      <div class="value muted">Information not provided</div>
-    }
-    else
-    {
-      <div class="value">@((willing == "Yes") ? "Yes" : "No")</div>
-    }
-  </div>
-
-  <div class="section">
-    <div class="sub-section-title">Shift Type</div>
-    @if (Model.CandidateClinicalScorecards.PracticePlacement?.ShiftTypes?.Any() == true)
-    {
-      @foreach (var shiftType in Model.CandidateClinicalScorecards.PracticePlacement.ShiftTypes)
-      {
-        <div class="tag">@shiftType</div>
-      }
-    }
-    else
-    {
-      <div class="value muted">Information not provided</div>
-    }
-  </div>
-</div>
-
-<div class="soft-divider"></div>
-
-
-    <!-------------------------------- Work Preferences ----------------------------------->
-
-    @{
-      var dayMap = new Dictionary<string, string>
-      {
-          { "1", "M" },
-          { "2", "T" },
-          { "3", "W" },
-          { "4", "T" },
-          { "5", "F" },
-          { "6", "S" },
-          { "7", "S" }
-      };
-
-      var availabilitySlots = (Model?.CandidateClinicalScorecards?.WorkPreferences.AvailabilitySlots ?? Array.Empty<AvailabilitySlotDto>()).ToList();
-
-      var groupedSlots = availabilitySlots
-          .GroupBy(s => s.Day)
-          .OrderBy(g => g.Key);
-    }
-
-    <div class="work-preferences page-break-avoid">
-    <div class="section-title">Work Preferences</div>
-
-    <div class="section">
-        <div class="sub-section-title">
-            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#333" viewBox="0 0 24 24" style="margin-right: 6px;">
-                <path d="M7 11h5v5H7z" opacity=".3"/>
-                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 
-                         2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 
-                         2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zm0-13H5V6h14v1z"/>
-              </svg></span> Availability
         </div>
-          <table class="availability-table">
-              @foreach (var group in groupedSlots)
-              {
-                  var dayShort = dayMap.ContainsKey(group.Key) ? dayMap[group.Key] : "-";
-                  <tr>
-                    <td class="day-cell-wrapper">
-                      <div class="day-cell">@dayShort</div>
-                    </td>
-                    <td>
-                      @if (group.All(s => s.AvailableSlotFromTime == null || s.AvailableSlotToTime == null))
-                      {
-                          <div class="muted">No slots selected</div>
-                      }
-                      else
-                      {
-                          @foreach (var slot in group)
-                          {
-                              if (slot.AvailableSlotFromTime != null && slot.AvailableSlotToTime != null)
-                              {
-                                  <div class="slot-line">@slot.AvailableSlotFromTime to @slot.AvailableSlotToTime</div>
-                              }
-                          }
-                      }
-                    </td>
-                  </tr>
-              }
-          </table>
+
+        <div class="section">
+          <div class="sub-section-title">Client Types</div>
+          @if (Model.CandidateScorecards.PracticePlacement?.ClientTypes?.Any() == true)
+          {
+            @foreach (var clientType in Model.CandidateScorecards.PracticePlacement.ClientTypes)
+            {
+              <div class="tag">@clientType</div>
+            }
+          }
+          else
+          {
+            <div class="value muted">Information not provided</div>
+          }
+        </div>
+
+        <div class="section">
+          <div class="sub-section-title">Willing to Transport Clients</div>
+          @{
+            var willing = Model.CandidateScorecards.PracticePlacement?.WillingToTransportClient;
+          }
+          @if (string.IsNullOrEmpty(willing))
+          {
+            <div class="value muted">Information not provided</div>
+          }
+          else
+          {
+            <div class="value">@((willing == "Yes") ? "Yes" : "No")</div>
+          }
+        </div>
+
+        <div class="section">
+          <div class="sub-section-title">Shift Type</div>
+          @if (Model.CandidateScorecards.PracticePlacement?.ShiftTypes?.Any() == true)
+          {
+            @foreach (var shiftType in Model.CandidateScorecards.PracticePlacement.ShiftTypes)
+            {
+              <div class="tag">@shiftType</div>
+            }
+          }
+          else
+          {
+            <div class="value muted">Information not provided</div>
+          }
+        </div>
       </div>
 
-      <div class="section">
+      <div class="soft-divider"></div>
+
+      <!-------------------------------- Work Preferences ----------------------------------->
+
+      @{
+        var dayMap = new Dictionary<string, string>
+        {
+            { "1", "M" },
+            { "2", "T" },
+            { "3", "W" },
+            { "4", "T" },
+            { "5", "F" },
+            { "6", "S" },
+            { "7", "S" }
+        };
+
+        var availabilitySlots = (Model?.CandidateScorecards?.WorkPreferences.AvailabilitySlots ?? Array.Empty<AvailabilitySlotDto>()).ToList();
+
+        var groupedSlots = availabilitySlots
+            .GroupBy(s => s.Day)
+            .OrderBy(g => g.Key);
+      }
+
+      <div class="work-preferences page-break-avoid">
+        <div class="section-title">Work Preferences</div>
+
+        <div class="section">
           <div class="sub-section-title">
               <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#333" viewBox="0 0 24 24" style="margin-right: 6px;">
-                <path d="M12 20c4.41 0 8-3.59 8-8s-3.59-8-8-8-8 
-                         3.59-8 8 3.59 8 8 8zm0-18c5.52 
-                         0 10 4.48 10 10s-4.48 10-10 
-                         10S2 17.52 2 12 6.48 2 12 2zm-1 
-                         5h2v6l5 3-1 1.73L11 13V7z"/>
-              </svg></span> Desired hours per week
+                  <path d="M7 11h5v5H7z" opacity=".3"/>
+                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 
+                            2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 
+                            2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zm0-13H5V6h14v1z"/>
+                </svg></span> Availability
           </div>
-          <div class="value">@Model.CandidateClinicalScorecards.WorkPreferences?.DesiredHoursPerWeek Hours</div>
+            <table class="availability-table">
+                @foreach (var group in groupedSlots)
+                {
+                    var dayShort = dayMap.ContainsKey(group.Key) ? dayMap[group.Key] : "-";
+                    <tr>
+                      <td class="day-cell-wrapper">
+                        <div class="day-cell">@dayShort</div>
+                      </td>
+                      <td>
+                        @if (group.All(s => s.AvailableSlotFromTime == null || s.AvailableSlotToTime == null))
+                        {
+                            <div class="muted">No slots selected</div>
+                        }
+                        else
+                        {
+                            @foreach (var slot in group)
+                            {
+                                if (slot.AvailableSlotFromTime != null && slot.AvailableSlotToTime != null)
+                                {
+                                    <div class="slot-line">@slot.AvailableSlotFromTime to @slot.AvailableSlotToTime</div>
+                                }
+                            }
+                        }
+                      </td>
+                    </tr>
+                }
+            </table>
+          </div>
+
+          <div class="section">
+              <div class="sub-section-title">
+                  <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#333" viewBox="0 0 24 24" style="margin-right: 6px;">
+                    <path d="M12 20c4.41 0 8-3.59 8-8s-3.59-8-8-8-8 
+                            3.59-8 8 3.59 8 8 8zm0-18c5.52 
+                            0 10 4.48 10 10s-4.48 10-10 
+                            10S2 17.52 2 12 6.48 2 12 2zm-1 
+                            5h2v6l5 3-1 1.73L11 13V7z"/>
+                  </svg></span> Desired hours per week
+              </div>
+              <div class="value">@Model.CandidateScorecards.WorkPreferences?.DesiredHoursPerWeek Hours</div>
+          </div>
       </div>
-    </div>
 
-    <div class="soft-divider"></div>
+      <div class="soft-divider"></div>
 
-    <!-------------------------------- Clinical Experience ----------------------------------->
+      @if(scorecardType != 2)
+      {
+        <!-------------------------------- Clinical Experience ----------------------------------->
 
-    <div class="clinical-experience">
-      <div class="section-title">Clinical Experience &amp; Skills</div>
+        <div class="clinical-experience">
+          <div class="section-title">Clinical Experience &amp; Skills</div>
 
-      <div class="sub-section-title">
-        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#333" viewBox="0 0 24 24" style="margin-right: 6px;">
-            <path d="M13 11h5v2h-5v5h-2v-5H6v-2h5V6h2v5z"/>
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
-                     10-4.48 10-10S17.52 2 12 2zm0 
-                     18c-4.41 0-8-3.59-8-8s3.59-8 
-                     8-8 8 3.59 8 8-3.59 8-8 8z"/>
-          </svg></span> Clinical Experience
-      </div>
+          <div class="sub-section-title">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#333" viewBox="0 0 24 24" style="margin-right: 6px;">
+                <path d="M13 11h5v2h-5v5h-2v-5H6v-2h5V6h2v5z"/>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+                        10-4.48 10-10S17.52 2 12 2zm0 
+                        18c-4.41 0-8-3.59-8-8s3.59-8 
+                        8-8 8 3.59 8 8-3.59 8-8 8z"/>
+              </svg></span> Clinical Experience
+          </div>
 
-      <div class="experience-tags">
-        @if (Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience?.ClinicalExperience?.Any() == true)
-          {
-              @foreach (var clinicalExperience in Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience.ClinicalExperience)
+          <div class="experience-tags">
+            @if (Model.CandidateScorecards.CandidateClinicalSkillsAndExperience?.ClinicalExperience?.Any() == true)
               {
-                  <span class="tag">@clinicalExperience</span>
+                  @foreach (var clinicalExperience in Model.CandidateScorecards.CandidateClinicalSkillsAndExperience.ClinicalExperience)
+                  {
+                      <span class="tag">@clinicalExperience</span>
+                  }
               }
-          }
-          else
-          {
-              <div class="value muted">Information not provided</div>
-          }
-      </div>
-
-      <div class="experience-time">
-        <div class="label"><b>Experience time</b></div>
-        @if (Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience?.IsNewToThisField == true)
-          {
-              <div class="value muted">Information not provided</div>
-          }
-          else
-          {
-              <div class="value">@Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience.TotalExperience</div>
-          }
-      </div>
-
-      <div class="sub-section-title"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#333" viewBox="0 0 24 24" style="margin-right: 6px;">
-        <path d="M12 17.27L18.18 21 16.54 13.97 
-                 22 9.24l-7.19-.61L12 2 9.19 
-                 8.63 2 9.24l5.46 4.73L5.82 
-                 21z"/>
-      </svg></span> Skills</div>
-
-      <div class="skill-tags">
-        @if (Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience?.Skills?.Any() == true)
-          {
-              @foreach (var skill in Model.CandidateClinicalScorecards.CandidateClinicalSkillsAndExperience.Skills)
+              else
               {
-                  <span class="tag">@skill</span>
+                  <div class="value muted">Information not provided</div>
               }
-          }
-          else
-          {
-              <div class="value muted">Information not provided</div>
-          }
-      </div>
-    </div>
+          </div>
 
-    <div class="soft-divider"></div>
+          <div class="experience-time">
+            <div class="label"><b>Experience time</b></div>
+            @if (Model.CandidateScorecards.CandidateClinicalSkillsAndExperience?.IsNewToThisField == true)
+              {
+                  <div class="value muted">Information not provided</div>
+              }
+              else
+              {
+                  <div class="value">@Model.CandidateScorecards.CandidateClinicalSkillsAndExperience.TotalExperience</div>
+              }
+          </div>
 
-    <!-------------------------------- BAYADA WAY ----------------------------------->
-    @{
-      var bayada = Model.CandidateClinicalScorecards.BayadaWay;
-    }
+          <div class="sub-section-title"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#333" viewBox="0 0 24 24" style="margin-right: 6px;">
+            <path d="M12 17.27L18.18 21 16.54 13.97 
+                    22 9.24l-7.19-.61L12 2 9.19 
+                    8.63 2 9.24l5.46 4.73L5.82 
+                    21z"/>
+          </svg></span> Skills</div>
 
-    <div class="bayada-way">
-      <div class="section-title">The BAYADA Way</div>
-      <p class="question">
-        Tell me about a time when you went the extra mile...
-      </p>
+          <div class="skill-tags">
+            @if (Model.CandidateScorecards.CandidateClinicalSkillsAndExperience?.Skills?.Any() == true)
+              {
+                  @foreach (var skill in Model.CandidateScorecards.CandidateClinicalSkillsAndExperience.Skills)
+                  {
+                      <span class="tag">@skill</span>
+                  }
+              }
+              else
+              {
+                  <div class="value muted">Information not provided</div>
+              }
+          </div>
+        </div>
 
-      <div class="radio-group">
-          <table class="question-table">
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" @(bayada?.IsWithHealthCare == true ? "checked" : "") />
-              </td>
-              <td>
-                [with healthcare] for a client and their family.
-              </td>
-            </tr>
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" @(bayada?.IsWithoutHealthCare == true ? "checked" : "") />
-              </td>
-              <td>
-                [without healthcare] for a customer or co-worker at work.
-              </td>
-            </tr>
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" @(bayada?.IsClientGoalAchieved == true ? "checked" : "") />
-              </td>
-              <td>
-                Tell me about a time when you helped a client achieve their care plan/developmental plan goals. 
-                How did you assist the client and what steps did you take to help them reach that achievement?
-              </td>
-            </tr>
-          </table>
-      </div>
-
-      @{
-          var ratingBayadaWay = Model.CandidateClinicalScorecards.BayadaWay?.Rating;
+        <div class="soft-divider"></div>
       }
 
-      <div class="proficiency-tags">
-          <span class="tag @(ratingBayadaWay == 1 ? "selected" : "")">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-              <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
-              <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5-1 4.5-1 6 0" stroke="#888" stroke-width="2" fill="none"/>
-            </svg>
-            Underdeveloped
-          </span>
+      <!-------------------------------- BAYADA WAY ----------------------------------->
+      @{
+        var bayada = Model.CandidateScorecards.BayadaWay;
+      }
 
-          <span class="tag @(ratingBayadaWay == 2 ? "selected" : "")">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-              <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
-              <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16h6" stroke="#888" stroke-width="2" fill="none"/>
-            </svg>
-            Developing
-          </span>
+      <div class="bayada-way">
+        <div class="section-title">The BAYADA Way</div>
+        <p class="question">
+          Tell me about a time when you went the extra mile...
+        </p>
 
-          <span class="tag @(ratingBayadaWay == 3 ? "selected" : "")">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-              <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
-              <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5 1 4.5 1 6 0" stroke="#888" stroke-width="2" fill="none"/>
-            </svg>
-            Competent
-          </span>
+        <div class="radio-group">
+            <table class="question-table">
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" @(bayada?.IsWithHealthCare == true ? "checked" : "") />
+                </td>
+                <td>
+                  [with healthcare] for a client and their family.
+                </td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" @(bayada?.IsWithoutHealthCare == true ? "checked" : "") />
+                </td>
+                <td>
+                  [without healthcare] for a customer or co-worker at work.
+                </td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" @(bayada?.IsClientGoalAchieved == true ? "checked" : "") />
+                </td>
+                <td>
+                  Tell me about a time when you helped a client achieve their care plan/developmental plan goals. 
+                  How did you assist the client and what steps did you take to help them reach that achievement?
+                </td>
+              </tr>
+            </table>
+        </div>
 
-          <span class="tag @(ratingBayadaWay == 4 ? "selected" : "")">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#007b8f" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-              <circle cx="12" cy="12" r="10" stroke="#007b8f" stroke-width="2" fill="none" />
-              <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5 1 4.5 1 6 0" stroke="#007b8f" stroke-width="2" fill="none"/>
-            </svg>
-            Highly Proficient
-          </span>
-      </div>
-
-      <div class="evaluation-box">
-        <div class="eval-label">Evaluation</div>
-        @if (string.IsNullOrWhiteSpace(Model.CandidateClinicalScorecards.BayadaWay?.EvaluationNotes))
-        {
-            <p class="eval-placeholder">
-                Please add your notes for this section of the candidate's interview.
-            </p>
+        @{
+            var ratingBayadaWay = Model.CandidateScorecards.BayadaWay?.Rating;
         }
-        else
-        {
-            <p>@Model.CandidateClinicalScorecards.BayadaWay.EvaluationNotes</p>
-        }
-      </div>
-    </div>
 
-    <div class="soft-divider"></div>
+        <div class="proficiency-tags">
+            <span class="tag @(ratingBayadaWay == 1 ? "selected" : "")">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
+                <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5-1 4.5-1 6 0" stroke="#888" stroke-width="2" fill="none"/>
+              </svg>
+              Underdeveloped
+            </span>
 
-    <!------------------------------ Behavioral Assessment ------------------------------->
+            <span class="tag @(ratingBayadaWay == 2 ? "selected" : "")">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
+                <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16h6" stroke="#888" stroke-width="2" fill="none"/>
+              </svg>
+              Developing
+            </span>
 
-    @{
-        var rating = Model.CandidateClinicalScorecards.BehavioralAssessment?.Rating;
-        var behavioralAssessment = Model.CandidateClinicalScorecards.BehavioralAssessment;
-    }
-    
-    <div class="behavioral-assessment">
-      <div class="section-title">Behavioral Assessment</div>
+            <span class="tag @(ratingBayadaWay == 3 ? "selected" : "")">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
+                <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5 1 4.5 1 6 0" stroke="#888" stroke-width="2" fill="none"/>
+              </svg>
+              Competent
+            </span>
 
-      <div class="accordion-section">
-          <div class="accordion-title">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M13 4a3 3 0 0 0-6 0c0 1 .5 1.9 1.2 2.4A3 3 0 0 0 6 9a3 3 0 0 0 1 5.8v.2a3 3 0 0 0 1.2 2.4A3 3 0 0 0 13 20"/>
-              <path d="M13 4a3 3 0 0 1 6 0c0 1-.5 1.9-1.2 2.4A3 3 0 0 1 20 9a3 3 0 0 1-1 5.8v.2a3 3 0 0 1-1.2 2.4A3 3 0 0 1 13 20"/>
-          </svg> Client Focused / Critical Thinking</div>
-          <table class="question-group">
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsBiggestChallenge == true ? "checked" : "") />
-              </td>
-              <td>Tell me about the biggest challenge you faced as a caregiver and what you did to resolve the challenge for the client.</td>
-            </tr>
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsClientCareWithLackedExperience == true ? "checked" : "") />
-              </td>
-              <td>Tell me about a time when you realized a client needed care you lacked experience with. What did you do to ensure the client got the care they needed?</td>
-            </tr>
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsClientNotFollowTreatment == true ? "checked" : "") />
-              </td>
-              <td>Your patient is not following through with their prescribed treatment plan and education, so they are not making progress. How do you respond?</td>
-            </tr>
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsComplexProblem == true ? "checked" : "") />
-              </td>
-              <td>Describe a time when you were faced with a complex problem at work. How did you go about solving it?</td>
-            </tr>
-          </table>
+            <span class="tag @(ratingBayadaWay == 4 ? "selected" : "")">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#007b8f" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                <circle cx="12" cy="12" r="10" stroke="#007b8f" stroke-width="2" fill="none" />
+                <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5 1 4.5 1 6 0" stroke="#007b8f" stroke-width="2" fill="none"/>
+              </svg>
+              Highly Proficient
+            </span>
+        </div>
+
+        <div class="evaluation-box">
+          <div class="eval-label">Evaluation</div>
+          @if (string.IsNullOrWhiteSpace(Model.CandidateScorecards.BayadaWay?.EvaluationNotes))
+          {
+              <p class="eval-placeholder">
+                  Please add your notes for this section of the candidate's interview.
+              </p>
+          }
+          else
+          {
+              <p>@Model.CandidateScorecards.BayadaWay.EvaluationNotes</p>
+          }
+        </div>
       </div>
 
-      <div class="accordion-section">
-          <div class="accordion-title">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg> Communicates Effectively</div>
-          <table class="question-table">
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsAdjustStyleToAccomodatePatient == true ? "checked" : "") />
-              </td>
-              <td>Tell me about a time when you adjusted your style to accommodate a patient/client and build rapport with the client/family?</td>
-            </tr>
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsLackOfCommunicationWithTeam == true ? "checked" : "") />
-              </td>
-              <td>Tell me about a time when a lack of communication between team members led to or could have led to a negative patient/client outcome. How did you handle it?</td>
-            </tr>
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsCommunicationDifficultyWithSupervisor == true ? "checked" : "") />
-              </td>
-              <td>Tell me about a time when you had difficulty communicating with your supervisor. What made it difficult and what did you do to resolve the issue?</td>
-            </tr>
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsCommunicationDifficultyWithSupervisor == true ? "checked" : "") />
-              </td>
-              <td>*Tell me about a time when you had to adjust your communication style at work to deal with either a co-worker or customer to build a good relationship or address their concerns.</td>
-            </tr>
-          </table>
-      </div>
+      <div class="soft-divider"></div>
 
-      <div class="accordion-section">
-          <div class="accordion-title">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-          </svg> Home Health</div>
-          <table class="question-table">
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.HomeHealth.IsBiggestChallengeFaced == true ? "checked" : "") />
-              </td>
-              <td>
-                Tell me about the biggest challenge you faced as a caregiver and what you did to resolve the challenge for the client.
-              </td>
-            </tr>
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.HomeHealth.IsAdjustStyleToAccomodatePatient == true ? "checked" : "") />
-              </td>
-              <td>
-                Tell me about a time when you adjusted your style to accommodate a patient/client and build rapport with the client/family?
-              </td>
-            </tr>
-          </table>
-      </div>
-
-      <div class="accordion-section">
-          <div class="accordion-title">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 21V3h18v18"/>
-              <path d="M8 21v-6h8v6"/>
-              <path d="M12 12v-4"/>
-              <path d="M10 8h4"/>
-          </svg> SNU</div>
-          <table class="question-table">
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.SNU.IsInvolvedInEmergency == true ? "checked" : "") />
-              </td>
-              <td>
-                Explain a time you were involved in an emergency with a patient and how did you respond.
-              </td>
-            </tr>
-            <tr>
-              <td class="checkbox-cell">
-                <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.SNU.IsFamilyInterviningInCare == true ? "checked" : "") />
-              </td>
-              <td>
-                Tell me about a time where the family was intervening in care or directing care and how did you handle the situation?
-              </td>
-            </tr>
-          </table>
-      </div>
-
-      <div class="proficiency-tags">
-        <span class="tag @(rating == 1 ? "selected" : "")">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-              <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
-              <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5-1 4.5-1 6 0" stroke="#888" stroke-width="2" fill="none"/>
-            </svg> Underdeveloped</span>
-        <span class="tag @(rating == 2 ? "selected" : "")">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-              <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
-              <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16h6" stroke="#888" stroke-width="2" fill="none"/>
-            </svg> Developing</span>
-        <span class="tag @(rating == 3 ? "selected" : "")">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-              <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
-              <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5 1 4.5 1 6 0" stroke="#888" stroke-width="2" fill="none"/>
-            </svg> Competent</span>
-        <span class="tag @(rating == 4 ? "selected" : "")">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#007b8f" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-              <circle cx="12" cy="12" r="10" stroke="#007b8f" stroke-width="2" fill="none" />
-              <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5 1 4.5 1 6 0" stroke="#007b8f" stroke-width="2" fill="none"/>
-            </svg> Highly Proficient</span>
-      </div>
-
-      <div class="evaluation-box">
-        <div class="eval-label">Evaluation</div>
-        @if (string.IsNullOrWhiteSpace(Model.CandidateClinicalScorecards.BehavioralAssessment?.EvaluationNotes))
-        {
-            <p class="eval-placeholder">
-                Please add your notes for this section of the candidate's interview.
-            </p>
-        }
-        else
-        {
-            <p>@Model.CandidateClinicalScorecards.BehavioralAssessment.EvaluationNotes</p>
-        }
-      </div>
-    </div>
-
-    <div class="soft-divider"></div>
-
-    <!------------------------------ Compensation ------------------------------->
-
-    <div class="compensation-section">
-      <div class="section-title">Compensation</div>
-      <div class="sub-section-title">
-        <span class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" stroke="black" stroke-width="1.5" viewBox="0 0 24 24">
-                <path d="M12 2c-.5 0-.9.3-1 .8l-.4 1.2c-.2.6-.7 1-1.3 1.1l-.9.1c-.7.1-1.1.8-.9 1.5.1.4.4.7.7.9C5.8 9.1 4 11.6 4 14.5 4 18.1 7.1 21 11 21s7-2.9 7-6.5c0-2.9-1.8-5.4-4.2-6.9.3-.2.6-.5.7-.9.2-.7-.2-1.4-.9-1.5l-.9-.1c-.6-.1-1.1-.5-1.3-1.1l-.4-1.2c-.1-.5-.5-.8-1-.8z"/>
-                <path d="M9 14h6m-6-3h6"/>
-            </svg>
-        </span> Desired compensation
-      </div>
+      <!------------------------------ Behavioral Assessment ------------------------------->
 
       @{
-            var compensation = Model.CandidateClinicalScorecards.Compensation;
-            var compensationType = compensation.CompensationMethod switch
-            {
-                CompensationMethods.Hourly => "Hourly",
-                CompensationMethods.Points => "Points",
-                _ => "Hourly"
-            };
+          var rating = Model.CandidateScorecards.BehavioralAssessment?.Rating;
+          var behavioralAssessment = Model.CandidateScorecards.BehavioralAssessment;
       }
-        <table class="compensation-table">
-            <tr>
-                <td class="compensation-amount">
-                    @($"{compensation.CompensationCurrency} {compensation.DesiredCompensation}")
-                </td>
-                <td class="compensation-type">
-                    @compensationType
-                </td>
-            </tr>
-        </table>
+      
+      <div class="behavioral-assessment">
+        <div class="section-title">Behavioral Assessment</div>
 
-    </div>
+        <div class="accordion-section">
+            <div class="accordion-title">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 4a3 3 0 0 0-6 0c0 1 .5 1.9 1.2 2.4A3 3 0 0 0 6 9a3 3 0 0 0 1 5.8v.2a3 3 0 0 0 1.2 2.4A3 3 0 0 0 13 20"/>
+                <path d="M13 4a3 3 0 0 1 6 0c0 1-.5 1.9-1.2 2.4A3 3 0 0 1 20 9a3 3 0 0 1-1 5.8v.2a3 3 0 0 1-1.2 2.4A3 3 0 0 1 13 20"/>
+            </svg> Client Focused / Critical Thinking</div>
+            <table class="question-group">
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsBiggestChallenge == true ? "checked" : "") />
+                </td>
+                <td>Tell me about the biggest challenge you faced as a caregiver and what you did to resolve the challenge for the client.</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsClientCareWithLackedExperience == true ? "checked" : "") />
+                </td>
+                <td>Tell me about a time when you realized a client needed care you lacked experience with. What did you do to ensure the client got the care they needed?</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsClientNotFollowTreatment == true ? "checked" : "") />
+                </td>
+                <td>Your patient is not following through with their prescribed treatment plan and education, so they are not making progress. How do you respond?</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.ClientFocused.IsComplexProblem == true ? "checked" : "") />
+                </td>
+                <td>Describe a time when you were faced with a complex problem at work. How did you go about solving it?</td>
+              </tr>
+            </table>
+        </div>
 
-    <div class="soft-divider"></div>
+        <div class="accordion-section">
+            <div class="accordion-title">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg> Communicates Effectively</div>
+            <table class="question-table">
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsAdjustStyleToAccomodatePatient == true ? "checked" : "") />
+                </td>
+                <td>Tell me about a time when you adjusted your style to accommodate a patient/client and build rapport with the client/family?</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsLackOfCommunicationWithTeam == true ? "checked" : "") />
+                </td>
+                <td>Tell me about a time when a lack of communication between team members led to or could have led to a negative patient/client outcome. How did you handle it?</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsCommunicationDifficultyWithSupervisor == true ? "checked" : "") />
+                </td>
+                <td>Tell me about a time when you had difficulty communicating with your supervisor. What made it difficult and what did you do to resolve the issue?</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.Communication.IsCommunicationDifficultyWithSupervisor == true ? "checked" : "") />
+                </td>
+                <td>*Tell me about a time when you had to adjust your communication style at work to deal with either a co-worker or customer to build a good relationship or address their concerns.</td>
+              </tr>
+            </table>
+        </div>
+
+        <div class="accordion-section">
+            <div class="accordion-title">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg> Home Health</div>
+            <table class="question-table">
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.HomeHealth.IsBiggestChallengeFaced == true ? "checked" : "") />
+                </td>
+                <td>
+                  Tell me about the biggest challenge you faced as a caregiver and what you did to resolve the challenge for the client.
+                </td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.HomeHealth.IsAdjustStyleToAccomodatePatient == true ? "checked" : "") />
+                </td>
+                <td>
+                  Tell me about a time when you adjusted your style to accommodate a patient/client and build rapport with the client/family?
+                </td>
+              </tr>
+            </table>
+        </div>
+
+        <div class="accordion-section">
+            <div class="accordion-title">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 21V3h18v18"/>
+                <path d="M8 21v-6h8v6"/>
+                <path d="M12 12v-4"/>
+                <path d="M10 8h4"/>
+            </svg> SNU</div>
+            <table class="question-table">
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.SNU.IsInvolvedInEmergency == true ? "checked" : "") />
+                </td>
+                <td>
+                  Explain a time you were involved in an emergency with a patient and how did you respond.
+                </td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell">
+                  <input type="checkbox" name="assessment1[]" @(behavioralAssessment?.SNU.IsFamilyInterviningInCare == true ? "checked" : "") />
+                </td>
+                <td>
+                  Tell me about a time where the family was intervening in care or directing care and how did you handle the situation?
+                </td>
+              </tr>
+            </table>
+        </div>
+
+        <div class="proficiency-tags">
+          <span class="tag @(rating == 1 ? "selected" : "")">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
+                <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5-1 4.5-1 6 0" stroke="#888" stroke-width="2" fill="none"/>
+              </svg> Underdeveloped</span>
+          <span class="tag @(rating == 2 ? "selected" : "")">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
+                <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16h6" stroke="#888" stroke-width="2" fill="none"/>
+              </svg> Developing</span>
+          <span class="tag @(rating == 3 ? "selected" : "")">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                <circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2" fill="none" />
+                <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5 1 4.5 1 6 0" stroke="#888" stroke-width="2" fill="none"/>
+              </svg> Competent</span>
+          <span class="tag @(rating == 4 ? "selected" : "")">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#007b8f" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                <circle cx="12" cy="12" r="10" stroke="#007b8f" stroke-width="2" fill="none" />
+                <path d="M8 10h1v2H8zM15 10h1v2h-1zM9 16c1.5 1 4.5 1 6 0" stroke="#007b8f" stroke-width="2" fill="none"/>
+              </svg> Highly Proficient</span>
+        </div>
+
+        <div class="evaluation-box">
+          <div class="eval-label">Evaluation</div>
+          @if (string.IsNullOrWhiteSpace(Model.CandidateScorecards.BehavioralAssessment?.EvaluationNotes))
+          {
+              <p class="eval-placeholder">
+                  Please add your notes for this section of the candidate's interview.
+              </p>
+          }
+          else
+          {
+              <p>@Model.CandidateScorecards.BehavioralAssessment.EvaluationNotes</p>
+          }
+        </div>
+      </div>
+
+      <div class="soft-divider"></div>
+
+      <!------------------------------ Compensation ------------------------------->
+
+      <div class="compensation-section">
+        <div class="section-title">Compensation</div>
+        <div class="sub-section-title">
+          <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" stroke="black" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M12 2c-.5 0-.9.3-1 .8l-.4 1.2c-.2.6-.7 1-1.3 1.1l-.9.1c-.7.1-1.1.8-.9 1.5.1.4.4.7.7.9C5.8 9.1 4 11.6 4 14.5 4 18.1 7.1 21 11 21s7-2.9 7-6.5c0-2.9-1.8-5.4-4.2-6.9.3-.2.6-.5.7-.9.2-.7-.2-1.4-.9-1.5l-.9-.1c-.6-.1-1.1-.5-1.3-1.1l-.4-1.2c-.1-.5-.5-.8-1-.8z"/>
+                  <path d="M9 14h6m-6-3h6"/>
+              </svg>
+          </span> Desired compensation
+        </div>
+
+        @{
+              var compensation = Model.CandidateScorecards.Compensation;
+              var compensationType = compensation.CompensationMethod switch
+              {
+                  CompensationMethods.Hourly => "Hourly",
+                  CompensationMethods.Points => "Points",
+                  _ => "Hourly"
+              };
+        }
+          <table class="compensation-table">
+              <tr>
+                  <td class="compensation-amount">
+                      @($"{compensation.CompensationCurrency} {compensation.DesiredCompensation}")
+                  </td>
+                  <td class="compensation-type">
+                      @compensationType
+                  </td>
+              </tr>
+          </table>
+
+      </div>
+
+      <div class="soft-divider"></div>
+    }
 
     <!------------------------------ Rating Recommendation -------------------------------->
 
@@ -1239,7 +1253,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="black">
                 <path d="M3 21V3h18v18H3zm2-2h2v-2H5v2zm0-4h2v-2H5v2zm0-4h2V9H5v2zm0-4h2V5H5v2zm4 12h2v-2H9v2zm0-4h2v-2H9v2zm0-4h2V9H9v2zm0-4h2V5H9v2zm4 12h2v-2h-2v2zm0-4h2v-2h-2v2zm0-4h2V9h-2v2zm0-4h2V5h-2v2zm4 12h2v-2h-2v2zm0-4h2v-2h-2v2zm0-4h2V9h-2v2zm0-4h2V5h-2v2z"/>
               </svg></span> Offices</label>
-          <div class="tag">@Model.CandidateClinicalScorecards.RatingAndRecommendation.OfficeName</div>
+          <div class="tag">@Model.CandidateScorecards.RatingAndRecommendation.OfficeName</div>
         </div>
         <div class="field csm-field" style="margin-top:10px;">
           <label><span class="icon">
@@ -1247,7 +1261,7 @@
                 <circle cx="12" cy="8" r="4" />
                 <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
               </svg></span> CSM assignment</label>
-          <div class="tag">@Model.CandidateClinicalScorecards.RatingAndRecommendation.CsmName</div>
+          <div class="tag">@Model.CandidateScorecards.RatingAndRecommendation.CsmName</div>
         </div>
       </div>
 
@@ -1258,7 +1272,7 @@
                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
             </svg></span> Recruiter summary</label>
         @{
-          var ratingAndRecommendation = Model.CandidateClinicalScorecards.RatingAndRecommendation?.Rating;
+          var ratingAndRecommendation = Model.CandidateScorecards.RatingAndRecommendation?.Rating;
         }
         <div class="proficiency-tags">
           <span class="tag @(ratingAndRecommendation == 1 ? "selected" : "")">
@@ -1298,11 +1312,12 @@
             What did you think? Evaluate this candidate’s skills,
             qualifications, and potential fit for BAYADA.
           </p>
-          <p class="summary-content">@Model.CandidateClinicalScorecards.RatingAndRecommendation.EvaluationNotes</p>
+          <p class="summary-content">@Model.CandidateScorecards.RatingAndRecommendation.EvaluationNotes</p>
         </div>
       </div>
     </div>
 
     <div class="soft-divider"></div>
+    
   </body>
 </html>
