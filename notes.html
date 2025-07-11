@@ -1,0 +1,190 @@
+@using System.Text.Json;
+@using System.Linq
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Comment Thread</title>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .date-separator {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #888;
+      font-weight: bold;
+      font-size: 14px;
+      margin: 20px 0;
+    }
+
+    .date-separator::before,
+    .date-separator::after {
+      content: "..........................................................................";
+      flex: 1;
+      color: #ccc;
+      font-size: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .date-separator::before {
+      margin-right: 10px;
+    }
+
+    .date-separator::after {
+      margin-left: 10px;
+    }
+
+    .comment {
+      margin-bottom: 20px; /* Space between comments */
+    }
+
+    .comment-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .avatar-cell {
+      width: 50px;
+      vertical-align: top;
+      padding-right: 10px;
+    }
+
+    .content-cell {
+      vertical-align: top;
+    }
+
+    .message-box {
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 12px;
+      background-color: #fdfdfd;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .name {
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    .time {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 12px;
+      margin-top: 12px;
+    }
+
+    .message {
+      font-size: 15px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background-color: #2596be;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 40px;
+      font-weight: bold;
+    }
+
+    .avatar.gray {
+      background-color: #6c757d;
+    }
+
+    .page-break-avoid {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+  </style>
+</head>
+<body>
+    <div class="container">
+        @foreach (var notes in Model.UserNotes.OrderBy(n => n.Date))
+        {
+            <div class="page-break-avoid">
+                <div class="date-separator">@notes.TimeFrame</div>
+                @foreach (var note in notes.Notes.OrderBy(n => n.CreatedDate))
+                {
+                    @{
+                        var avatar = string.Join("", @note.EmployeeName
+                            .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Take(2)
+                            .Select(n => n[0]))
+                            .ToUpper();
+                    }
+                    <div class="comment">
+                        <table class="comment-table">
+                            <tr>
+                            <td class="avatar-cell">
+                                <div class="avatar">@avatar</div>
+                            </td>
+                            <td class="content-cell">
+                                <div class="message-box">
+                                    <div class="name">@note.EmployeeName</div>
+                                    <div class="time">@note.CreatedDate</div>
+                                    <div class="message">
+                                        @{
+                                            var content = System.Text.Json.JsonSerializer.Deserialize<List<Dictionary<string, object>>>(note.Content);
+
+                                            foreach (var part in content)
+                                            {
+                                                if (part.ContainsKey("insert"))
+                                                {
+                                                    var insertObj = part["insert"];
+
+                                                    // Check if it's a mention
+                                                    if (insertObj is System.Text.Json.JsonElement insertElement && insertElement.ValueKind == System.Text.Json.JsonValueKind.Object)
+                                                    {
+                                                        if (insertElement.TryGetProperty("mention", out var mentionProp))
+                                                        {
+                                                            var value = mentionProp.GetProperty("value").GetString();
+                                                            <strong>@value</strong>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        // It's regular text
+                                                        var text = insertObj.ToString();
+                                                        @text
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </td>
+                            </tr>
+                        </table>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</body>
+</html>
